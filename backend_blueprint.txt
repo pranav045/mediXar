@@ -1,0 +1,232 @@
+=========================================================
+          MEDIXAR BACKEND DEVELOPMENT BLUEPRINT
+=========================================================
+This document contains the EXACT, exhaustive steps, commands, 
+database schema, and logic required to make the MedixAR frontend 
+100% fully dynamic using Laravel. 
+
+---------------------------------------------------------
+1. INITIAL SETUP & ENVIRONMENT (.env)
+---------------------------------------------------------
+Make sure your `.env` file is configured for your local MySQL.
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=medixar_db
+DB_USERNAME=root
+DB_PASSWORD=
+
+* Run `php artisan key:generate` to secure the app.
+* Run `php artisan storage:link` (CRITICAL: Needed so uploaded profile pictures and .glb 3D files can be viewed in the browser).
+
+---------------------------------------------------------
+2. MASTER ARTISAN COMMANDS LIST
+---------------------------------------------------------
+Run these commands in your terminal to generate all the 
+necessary files. The `-m` flag creates the migration files.
+
+# Models & Migrations
+php artisan make:model AnatomyModel -m
+php artisan make:model Hotspot -m
+php artisan make:model Quiz -m
+php artisan make:model Question -m
+php artisan make:model QuizAttempt -m
+php artisan make:model ContactMessage -m
+
+# Pivot Tables (Crucial for Dashboard Stats!)
+php artisan make:migration create_anatomy_model_user_table
+
+# Seeders (To put initial fake data so your website isn't blank)
+php artisan make:seeder AnatomyModelSeeder
+php artisan make:seeder QuizSeeder
+
+# Controllers
+php artisan make:controller AuthController
+php artisan make:controller DashboardController
+php artisan make:controller ProfileController
+php artisan make:controller AnatomyController
+php artisan make:controller QuizController
+php artisan make:controller ContactController
+
+# Form Requests (For clean validation logic instead of cluttering Controllers)
+php artisan make:request RegisterRequest
+php artisan make:request LoginRequest
+php artisan make:request ProfileUpdateRequest
+
+---------------------------------------------------------
+3. DATABASE SCHEMA (MIGRATIONS)
+---------------------------------------------------------
+Open the files in `database/migrations/` and update the `up()` functions.
+
+A. Users Table (Modify default create_users_table)
+$table->string('specialization')->nullable(); // e.g., Cardiology
+$table->integer('learning_streak')->default(0);
+$table->string('avatar')->nullable(); // Path to profile picture
+$table->json('preferences')->nullable(); // Store theme, notifications as JSON e.g. {"theme": "dark", "email_alerts": true}
+$table->string('plan_type')->default('free'); // e.g., 'free', 'pro', 'enterprise' (Crucial for the Pricing section!)
+
+B. AnatomyModels Table (create_anatomy_models_table)
+$table->string('title');
+$table->text('description');
+$table->string('file_path'); // Path to the .glb 3D file in storage
+$table->string('category'); // e.g., 'Skeletal', 'Muscular'
+$table->string('thumbnail')->nullable();
+$table->boolean('is_premium')->default(false); // If true, only users with plan_type 'pro' can view it
+
+C. Hotspots Table (create_hotspots_table)
+$table->foreignId('anatomy_model_id')->constrained()->onDelete('cascade');
+$table->string('title');
+$table->text('description');
+$table->string('position'); // Can store JSON e.g., '{"x":1,"y":2,"z":3}'
+$table->string('normal'); // Can store JSON e.g., '{"x":0,"y":1,"z":0}'
+
+D. Quizzes Table (create_quizzes_table)
+$table->string('title');
+$table->string('category')->nullable();
+$table->string('difficulty'); // Easy, Medium, Hard
+$table->text('description')->nullable();
+
+E. Questions Table (create_questions_table)
+$table->foreignId('quiz_id')->constrained()->onDelete('cascade');
+$table->string('question_text');
+$table->json('options'); // Store A, B, C, D as JSON array
+$table->string('correct_answer'); // e.g., "A"
+
+F. QuizAttempts Table (create_quiz_attempts_table)
+$table->foreignId('user_id')->constrained()->onDelete('cascade');
+$table->foreignId('quiz_id')->constrained()->onDelete('cascade');
+$table->integer('score');
+$table->integer('total_questions');
+$table->timestamps(); // Keeps track of WHEN they took the quiz
+
+G. Anatomy_Model_User Pivot Table (For "Recently Viewed" on Dashboard)
+$table->foreignId('user_id')->constrained()->onDelete('cascade');
+$table->foreignId('anatomy_model_id')->constrained()->onDelete('cascade');
+$table->timestamp('last_viewed_at'); // Track exactly when they viewed it
+
+H. ContactMessages Table (create_contact_messages_table)
+$table->string('name');
+$table->string('email');
+$table->string('subject');
+$table->text('message');
+$table->boolean('is_read')->default(false);
+
+* AFTER WRITING THESE, RUN: `php artisan migrate`
+
+---------------------------------------------------------
+4. ELOQUENT MODELS (Relationships)
+---------------------------------------------------------
+Open the files in `app/Models/` and add these relationships:
+
+User.php:
+public function quizAttempts() { return $this->hasMany(QuizAttempt::class); }
+public function viewedModels() { return $this->belongsToMany(AnatomyModel::class)->withPivot('last_viewed_at')->orderByDesc('pivot_last_viewed_at'); }
+protected $casts = ['preferences' => 'array']; // Cast JSON settings to an array automatically
+
+AnatomyModel.php:
+public function hotspots() { return $this->hasMany(Hotspot::class); }
+public function viewers() { return $this->belongsToMany(User::class); }
+
+Quiz.php:
+public function questions() { return $this->hasMany(Question::class); }
+
+---------------------------------------------------------
+5. ROUTING (routes/web.php)
+---------------------------------------------------------
+Replace the static view returns with proper controller routes.
+
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AnatomyController;
+use App\Http\Controllers\QuizController;
+use App\Http\Controllers\ContactController;
+
+// Public Routes
+Route::get('/', function () { return view('welcome'); })->name('home');
+Route::get('/about', function () { return view('about'); })->name('about');
+Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
+
+// Auth Routes (Guest Only)
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+});
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+// Protected Routes (Requires Login)
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // For profile avatar uploads:
+    Route::post('/profile/avatar', [ProfileController::class, 'uploadAvatar'])->name('profile.avatar');
+    
+    Route::get('/anatomy', [AnatomyController::class, 'index'])->name('anatomy');
+    Route::get('/anatomy/{id}', [AnatomyController::class, 'show'])->name('anatomy.show');
+    Route::post('/anatomy/{id}/track-view', [AnatomyController::class, 'trackView'])->name('anatomy.track'); // Updates the 'Recently Viewed' pivot table
+    
+    Route::get('/quiz', [QuizController::class, 'index'])->name('quiz');
+    Route::get('/quiz/{id}', [QuizController::class, 'show'])->name('quiz.show');
+    Route::post('/quiz/{id}/submit', [QuizController::class, 'submit'])->name('quiz.submit');
+});
+
+---------------------------------------------------------
+6. CONTROLLER LOGIC OVERVIEW
+---------------------------------------------------------
+A. AuthController:
+- register(): Validate Request -> User::create() -> Hash::make(password) -> Auth::login() -> redirect route('dashboard').
+- login(): Validate Request -> Auth::attempt() -> redirect route('dashboard').
+- logout(): Auth::logout() -> Session invalidate/regenerateToken -> redirect route('home').
+
+B. DashboardController:
+- index(): 
+    $user = Auth::user();
+    $recentModels = $user->viewedModels()->limit(3)->get(); 
+    $recentQuizzes = $user->quizAttempts()->with('quiz')->latest()->limit(5)->get();
+    return view('dashboard', compact('user', 'recentModels', 'recentQuizzes'));
+
+C. ProfileController:
+- edit(): return view('profile', ['user' => Auth::user()]);
+- update(): Update email/name, also update $user->preferences with the JSON from the notification/theme toggles.
+- uploadAvatar(): Handle file upload using `$request->file('avatar')->store('avatars', 'public')`.
+
+D. AnatomyController:
+- index(): Fetch all AnatomyModels. return view('anatomy', compact('models')).
+- show($id): Fetch AnatomyModel with its Hotspots. return the specific model data (JSON or View).
+- trackView($id): `$user->viewedModels()->syncWithoutDetaching([$id => ['last_viewed_at' => now()]]);`
+
+---------------------------------------------------------
+7. BLADE FILE UPDATES (Frontend -> Backend Integration)
+---------------------------------------------------------
+You must replace static data in your HTML with Laravel PHP tags.
+
+- In `dashboard.blade.php`:
+  Replace "Dr. Sarah" with `{{ Auth::user()->name }}`
+  Replace "12 Days" with `{{ Auth::user()->learning_streak }}`
+  Use a `@foreach($recentModels as $model)` loop for the "Recently Viewed Models" section.
+  Use a `@foreach($recentQuizzes as $attempt)` loop for the "Recent Quiz Scores" section.
+
+- In `profile.blade.php`:
+  Pre-fill input fields with `value="{{ Auth::user()->name }}"`.
+  For toggles, use: `{{ (Auth::user()->preferences['dark_mode'] ?? false) ? 'checked' : '' }}`.
+  Update the `<form>` to include `enctype="multipart/form-data"` if you are allowing image uploads!
+
+- In `anatomy.blade.php`:
+  Use `@foreach($models as $model)` in the sidebar to generate the list of body parts dynamically.
+  In the `<model-viewer src="...">` tag, use `src="{{ asset('storage/' . $model->file_path) }}"` to load the 3D files from the DB.
+
+- In `auth/login.blade.php` & `register.blade.php`:
+  Make sure your `<form>` tags have `method="POST"` and `action="{{ route('login.submit') }}"`.
+  CRITICAL: Add `@csrf` immediately inside EVERY form to prevent 419 Page Expired errors.
+  Add `name="email"`, `name="password"` attributes to the inputs.
+
+=========================================================
+END OF BLUEPRINT
+=========================================================

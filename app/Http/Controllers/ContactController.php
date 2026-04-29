@@ -3,35 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
+use App\Models\ContactMessage;
 
 class ContactController extends Controller
 {
-    public function index(){
+    public function show() {
         return view('contact');
     }
 
-    public function send(Request $request){
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'subject' => $request->subject,
-            'message' => $request->message
-        ];
+    public function submit(Request $request) {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
 
-        try {
-            Mail::raw(
-                "Name: {$data['name']}\nEmail: {$data['email']}\nSubject: {$data['subject']}\nMessage: {$data['message']}",
-                
-                function ($message) use ($data) {
-                    $message->to('sahgomit20@gmail.com')->subject($data['subject'])->replyTo($data['email']);
-                }
-            );
+        ContactMessage::create($validated);
 
-            return back()->with('success', 'Mail sent successfully');
-
-        } catch (\Exception $error) {
-            return back()->with('error', 'Error: '.$error->getMessage());
-        }
+        return redirect()->route('contact.show')->with('success', 'Message sent successfully!');
     }
 }

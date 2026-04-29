@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register | MedixAR</title>
+    <title>Reset Password | MedixAR</title>
 
     @vite(['resources/css/app.css'])
 
@@ -34,20 +34,20 @@
 
 <body class="bg-[#050b09] min-h-screen flex items-center justify-center text-white overflow-hidden selection:bg-teal-500/30">
 
-        <div class="absolute inset-0 -z-10">
+    <div class="absolute inset-0 -z-10">
         <img src="{{ Vite::asset('resources/img/anatomy_hero_bg.png') }}"
-             class="w-full h-full object-cover opacity-20 blur-sm mix-blend-screen" style="transform: scaleX(-1);">
+             class="w-full h-full object-cover opacity-20 blur-sm mix-blend-screen" style="transform: scaleY(-1);">
     </div>
 
-        <div class="w-full flex items-center justify-center px-6 py-8">
+    <div class="w-full flex items-center justify-center px-6 py-8">
 
-                <div class="w-full max-w-6xl max-h-[90vh]">
+        <div class="w-full max-w-6xl max-h-[90vh]">
 
             <div class="glass-panel w-full h-full rounded-3xl flex flex-col lg:flex-row overflow-hidden shadow-2xl">
 
-                                <div class="lg:w-[65%] p-10 sm:p-14 md:p-16 flex flex-col justify-between border-r border-white/10 relative overflow-hidden">
+                <div class="lg:w-[65%] p-10 sm:p-14 md:p-16 flex flex-col justify-between border-r border-white/10 relative overflow-hidden">
                     
-                                        <div class="mb-10 relative z-10">
+                    <div class="mb-10 relative z-10">
                         <a href="/" class="flex items-center gap-3 group inline-flex">
                             <div class="w-16 h-16 relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
                                 <div class="absolute inset-0 border-2 border-teal-500/30 rounded-xl transform rotate-12 group-hover:rotate-90 transition-all duration-700"></div>
@@ -62,83 +62,65 @@
 
                     <div class="relative z-10">
                         <h1 class="text-4xl md:text-6xl font-semibold mb-6">
-                            Join the Revolution
+                            Reset Password
                         </h1>
 
                         <p class="text-gray-300 text-lg leading-relaxed max-w-xl">
-                            Create your free account today. Start exploring the human body in unparalleled detail with our interactive 3D and AR models.
+                            Lost access? No problem. Set up your new password below.
                         </p>
-
-                        <div class="mt-8 flex flex-col gap-3 text-gray-300">
-                            <div class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-teal-400 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                </svg>
-                                Full access to 5,000+ structures
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-teal-400 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                </svg>
-                                Create and save custom study paths
-                            </div>
-                        </div>
                     </div>
 
                     <div class="mt-16 relative z-10">
-                        <p class="text-sm text-gray-400 mb-4">ALREADY HAVE AN ACCOUNT?</p>
+                        <p class="text-sm text-gray-400 mb-4">REMEMBER YOUR PASSWORD?</p>
                         <a href="/login" class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 hover:bg-white/10 transition text-sm font-medium">
-                            Sign In Instead →
+                            Back to Sign In →
                         </a>
                     </div>
                     
-                                        <div class="absolute -top-20 -left-20 w-96 h-96 bg-emerald-900/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen"></div>
+                    <div class="absolute -bottom-10 -right-10 w-96 h-96 bg-cyan-900/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen"></div>
 
                 </div>
 
-                                <div class="lg:w-[35%] p-10 sm:p-12 flex flex-col justify-center bg-black/40 overflow-y-auto">
+                <div class="lg:w-[35%] p-10 sm:p-12 flex flex-col justify-center bg-black/40">
 
-                    <h2 class="text-2xl font-semibold mb-2">Create Account</h2>
+                    <h2 class="text-2xl font-semibold mb-2">New Password</h2>
                     <p class="text-gray-400 text-sm mb-8">
-                        Just a few details to get you started.
+                        Enter your email and provide a strong new password.
                     </p>
 
-                    <form method="POST" action="/register" class="space-y-4">
+                    @if($errors->any())
+                    <div class="px-4 py-2 rounded-xl bg-red-500/20 text-red-400 text-xs border border-red-500/30 mb-4">
+                        <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
+                    <form method="POST" action="/reset-password" class="space-y-6">
                         @csrf
 
                         <div>
-                            <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">Full Name</label>
-                            <input type="text" name="name" required placeholder="John Doe"
-                                class="form-input w-full rounded-full px-5 py-3 text-sm">
-                        </div>
-
-                        <div>
                             <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">Email Address</label>
-                            <input type="email" name="email" required placeholder="you@university.edu"
-                                class="form-input w-full rounded-full px-5 py-3 text-sm">
+                            <input type="email" name="email" value="{{ $email ?? '' }}" required placeholder="you@university.edu"
+                                class="form-input w-full rounded-full px-5 py-3.5 text-sm" readonly>
                         </div>
 
                         <div>
-                            <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">Password</label>
-                            <input type="password" name="password" required placeholder="••••••••"
-                                class="form-input w-full rounded-full px-5 py-3 text-sm">
+                            <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">New Password</label>
+                            <input type="password" name="password" required placeholder="Min 8 characters"
+                                class="form-input w-full rounded-full px-5 py-3.5 text-sm" minlength="8">
                         </div>
 
                         <div>
-                            <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">Confirm Password</label>
-                            <input type="password" name="password_confirmation" required placeholder="••••••••"
-                                class="form-input w-full rounded-full px-5 py-3 text-sm">
+                            <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">Confirm New Password</label>
+                            <input type="password" name="password_confirmation" required placeholder="Repeat new password"
+                                class="form-input w-full rounded-full px-5 py-3.5 text-sm" minlength="8">
                         </div>
 
-                        <div class="flex items-center text-sm pt-2 pb-2">
-                            <input id="terms" name="terms" type="checkbox" required class="h-4 w-4 rounded border-gray-600 bg-transparent text-teal-500 focus:ring-teal-500">
-                            <label for="terms" class="ml-2 block text-gray-400">
-                                I agree to the <a href="#" class="text-teal-400 hover:text-teal-300">Terms</a>
-                            </label>
-                        </div>
-
-                        <button type="submit" class="w-full flex items-center justify-center py-4 px-4 rounded-full font-bold text-[#040d0a] bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 transition-all shadow-[0_5px_15px_rgba(20,184,166,0.2)] hover:shadow-[0_10px_20px_rgba(20,184,166,0.4)]">
-                            Sign Up
+                        <button type="submit" class="w-full mt-4 flex items-center justify-center py-4 px-4 rounded-full font-bold text-[#040d0a] bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 transition-all shadow-[0_5px_15px_rgba(20,184,166,0.2)] hover:shadow-[0_10px_20px_rgba(20,184,166,0.4)]">
+                            Update Password
                         </button>
 
                     </form>

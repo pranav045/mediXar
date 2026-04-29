@@ -1,60 +1,46 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AnatomyController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\ContactController;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function () { return view('welcome'); })->name('home');
+Route::get('/about', function () { return view('about'); })->name('about');
+
+Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
+
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+    
+    Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
+    Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->name('password.email');
+    Route::get('/reset-password', [AuthController::class, 'showResetPassword'])->name('password.reset');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 });
 
-//for email 
-Route::get('/contact', [ContactController::class,'index']);
-Route::post('/contact', [ContactController::class,'send']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
-
-// Authentication Views (UI Only)
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
-
-Route::get('/forgot-password', function () {
-    return view('auth.forgot-password');
-})->name('password.request');
-
-// Anatomy Learning Module
-Route::get('/anatomy', function () {
-    return view('anatomy');
-})->name('anatomy.explorer');
-
-// User Profile
-Route::get('/profile', function () {
-    return view('profile');
-})->name('profile');
-
-// User Dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
-
-// Quiz Interface
-Route::get('/quiz', function () {
-    return view('quiz');
-})->name('quiz');
-
-//session
-
-// Route::get(
-//     '/session', function(){
-//         return [
-//             'using-put' => $request->session()->put('course',[]),
-//             'using-put-mutiple' => request->session()->push('course','PHP')  
-//         ];
-//     }
-// );
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/avatar', [ProfileController::class, 'uploadAvatar'])->name('profile.avatar');
+    Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+    
+    Route::get('/anatomy', [AnatomyController::class, 'index'])->name('anatomy');
+    Route::get('/anatomy/{id}', [AnatomyController::class, 'show'])->name('anatomy.show');
+    Route::post('/anatomy/{id}/track-view', [AnatomyController::class, 'trackView'])->name('anatomy.track');
+    
+    Route::get('/quiz', [QuizController::class, 'index'])->name('quiz');
+    Route::get('/quiz/{id}', [QuizController::class, 'show'])->name('quiz.show');
+    Route::post('/quiz/{id}/submit', [QuizController::class, 'submit'])->name('quiz.submit');
+});

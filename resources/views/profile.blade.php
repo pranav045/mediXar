@@ -41,8 +41,7 @@
 
 <body class="bg-[#050b09] text-white min-h-screen flex flex-col selection:bg-teal-500/30 pb-20">
 
-    <!-- Ambient Background Elements -->
-    <div class="fixed inset-0 -z-20 pointer-events-none">
+        <div class="fixed inset-0 -z-20 pointer-events-none">
         <div class="absolute top-[10%] left-[20%] w-[30vw] h-[30vw] rounded-full bg-emerald-900/10 blur-[120px] mix-blend-screen"></div>
         <div class="absolute bottom-[20%] right-[10%] w-[40vw] h-[40vw] rounded-full bg-teal-900/10 blur-[150px] mix-blend-screen"></div>
     </div>
@@ -50,8 +49,7 @@
         <img src="{{ Vite::asset('resources/img/anatomy_hero_bg.png') }}" class="w-full h-full object-cover opacity-10 blur-xl mix-blend-screen">
     </div>
 
-    <!-- Navbar -->
-    <nav class="w-full z-50 glass-nav h-[72px] sticky top-0">
+        <nav class="w-full z-50 glass-nav h-[72px] sticky top-0">
         <div class="h-full px-6 max-w-7xl mx-auto flex items-center justify-between">
             <a href="/" class="flex items-center gap-3 group">
                 <div class="w-12 h-12 relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
@@ -66,16 +64,17 @@
 
             <div class="flex items-center gap-6">
                 <a href="/anatomy" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors">3D Explorer</a>
-                <a href="/" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors">Logout</a>
+                <form action="{{ route('logout') }}" method="POST" class="inline">
+                    @csrf
+                    <button type="submit" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors">Logout</button>
+                </form>
             </div>
         </div>
     </nav>
 
-    <!-- Main Container -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-6 pt-12 flex flex-col lg:flex-row gap-8">
+        <main class="flex-grow max-w-7xl w-full mx-auto px-6 pt-12 flex flex-col lg:flex-row gap-8">
 
-        <!-- Left Sidebar (Settings Navigation) -->
-        <aside class="w-full lg:w-[280px] flex-shrink-0">
+                <aside class="w-full lg:w-[280px] flex-shrink-0">
             
             <div class="mb-8 flex items-center gap-4">
                 <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-teal-500 to-emerald-400 p-[2px]">
@@ -86,8 +85,8 @@
                     </div>
                 </div>
                 <div>
-                    <h2 class="font-bold text-lg">Dr. Jane Doe</h2>
-                    <p class="text-xs text-gray-400 font-medium tracking-widest uppercase mt-1">Free Tier</p>
+                    <h2 class="font-bold text-lg">{{ Auth::user()->name ?? 'Dr. Jane Doe' }}</h2>
+                    <p class="text-xs text-gray-400 font-medium tracking-widest uppercase mt-1">{{ Auth::user()->plan_type ?? 'Free' }} Tier</p>
                 </div>
             </div>
 
@@ -114,77 +113,88 @@
 
         </aside>
 
-        <!-- Right Content Area -->
-        <div class="flex-grow space-y-8">
+                <div class="flex-grow space-y-8">
 
-            <!-- Stats Row -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-teal-500">
                     <p class="text-gray-400 text-sm font-medium">Models Explored</p>
-                    <p class="text-3xl font-bold mt-2">142</p>
+                    <p class="text-3xl font-bold mt-2">{{ Auth::user()->viewedModels()->count() }}</p>
                 </div>
                 <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-emerald-500">
                     <p class="text-gray-400 text-sm font-medium">Quizzes Passed</p>
-                    <p class="text-3xl font-bold mt-2">28</p>
+                    <p class="text-3xl font-bold mt-2">{{ Auth::user()->quizAttempts()->where('score', '>=', \DB::raw('total_questions / 2.0'))->count() }}</p>
                 </div>
                 <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-cyan-500">
                     <p class="text-gray-400 text-sm font-medium">Study Streak</p>
-                    <p class="text-3xl font-bold mt-2">12 <span class="text-lg font-normal text-gray-500">days</span></p>
+                    <p class="text-3xl font-bold mt-2">{{ Auth::user()->learning_streak ?? 0 }} <span class="text-lg font-normal text-gray-500">days</span></p>
                 </div>
             </div>
 
-            <!-- Tab: Personal Details -->
-            <div id="tab-personal" class="tab-content glass-panel p-8 md:p-10 rounded-3xl relative overflow-hidden">
+            @if(session('success'))
+            <div class="px-6 py-3 mt-4 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                {{ session('success') }}
+            </div>
+            @endif
+            @if($errors->any())
+            <div class="px-6 py-3 mt-4 rounded-xl bg-red-500/20 text-red-400 border border-red-500/30">
+                <ul class="list-disc list-inside">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
+                        <div id="tab-personal" class="tab-content glass-panel p-8 md:p-10 rounded-3xl relative overflow-hidden">
                 
                 <h3 class="text-2xl font-bold mb-6">Personal Details</h3>
                 
-                <form class="space-y-6">
-                    
-                    <!-- Avatar Upload -->
+                                <form action="{{ route('profile.avatar') }}" method="POST" enctype="multipart/form-data" class="mb-6">
+                    @csrf
                     <div class="flex items-center gap-6 pb-6 border-b border-white/10">
-                        <div class="w-20 h-20 rounded-full bg-black/50 border border-white/20 flex items-center justify-center overflow-hidden relative group cursor-pointer">
-                            <svg class="w-8 h-8 text-gray-500 group-hover:text-teal-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
+                        <div class="w-20 h-20 rounded-full bg-black/50 border border-white/20 flex items-center justify-center overflow-hidden relative group cursor-pointer" onclick="document.getElementById('avatar-input').click()">
+                            @if(Auth::user()->avatar)
+                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" class="w-full h-full object-cover">
+                            @else
+                                <svg class="w-8 h-8 text-gray-500 group-hover:text-teal-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            @endif
                             <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                 <span class="text-xs font-semibold text-white">Upload</span>
                             </div>
                         </div>
+                        <input type="file" id="avatar-input" name="avatar" class="hidden" onchange="this.form.submit()">
                         <div>
                             <p class="font-medium text-white mb-1">Profile Photo</p>
                             <p class="text-xs text-gray-400">Recommended size: 256x256px. Max 2MB.</p>
                         </div>
                     </div>
+                </form>
 
+                <form action="{{ route('profile.update') }}" method="POST" class="space-y-6">
+                    @csrf
+                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">First Name</label>
-                            <input type="text" value="Jane" class="form-input w-full rounded-xl px-4 py-3 text-sm">
-                        </div>
-                        <div>
-                            <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">Last Name</label>
-                            <input type="text" value="Doe" class="form-input w-full rounded-xl px-4 py-3 text-sm">
+                        <div class="md:col-span-2">
+                            <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">Full Name</label>
+                            <input type="text" name="name" value="{{ Auth::user()->name ?? '' }}" class="form-input w-full rounded-xl px-4 py-3 text-sm">
                         </div>
                     </div>
 
                     <div>
                         <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">Email Address</label>
-                        <input type="email" value="jane.doe@university.edu" class="form-input w-full rounded-xl px-4 py-3 text-sm">
+                        <input type="email" name="email" value="{{ Auth::user()->email ?? '' }}" class="form-input w-full rounded-xl px-4 py-3 text-sm">
                     </div>
 
                     <div>
-                        <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">Institution / University</label>
-                        <input type="text" value="Medical College of Anatomy" class="form-input w-full rounded-xl px-4 py-3 text-sm">
-                    </div>
-
-                    <div>
-                        <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">Bio / Study Goals</label>
-                        <textarea rows="3" class="form-input w-full rounded-xl px-4 py-3 text-sm resize-none">Currently studying for USMLE Step 1. Focusing heavily on neuroanatomy and the cardiovascular system.</textarea>
+                        <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">Institution / Specialization</label>
+                        <input type="text" name="specialization" value="{{ Auth::user()->specialization ?? '' }}" class="form-input w-full rounded-xl px-4 py-3 text-sm">
                     </div>
 
                     <div class="pt-4 flex justify-end">
-                        <button type="button" class="px-8 py-3 rounded-full font-bold text-[#040d0a] bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 transition-all shadow-[0_5px_15px_rgba(20,184,166,0.2)]">
+                        <button type="submit" class="px-8 py-3 rounded-full font-bold text-[#040d0a] bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 transition-all shadow-[0_5px_15px_rgba(20,184,166,0.2)]">
                             Save Changes
                         </button>
                     </div>
@@ -192,32 +202,31 @@
                 </form>
             </div>
 
-            <!-- Tab: Security & Password -->
-            <div id="tab-security" class="tab-content hidden glass-panel p-8 md:p-10 rounded-3xl relative overflow-hidden">
+                        <div id="tab-security" class="tab-content hidden glass-panel p-8 md:p-10 rounded-3xl relative overflow-hidden">
                 <h3 class="text-2xl font-bold mb-6">Security & Password</h3>
-                <form class="space-y-6">
+                <form action="{{ route('profile.password') }}" method="POST" class="space-y-6">
+                    @csrf
                     <div>
                         <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">Current Password</label>
-                        <input type="password" placeholder="Enter current password" class="form-input w-full rounded-xl px-4 py-3 text-sm">
+                        <input type="password" name="current_password" placeholder="Enter current password" class="form-input w-full rounded-xl px-4 py-3 text-sm" required>
                     </div>
                     <div>
                         <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">New Password</label>
-                        <input type="password" placeholder="Create new password" class="form-input w-full rounded-xl px-4 py-3 text-sm">
+                        <input type="password" name="new_password" placeholder="Create new password" class="form-input w-full rounded-xl px-4 py-3 text-sm" required minlength="8">
                     </div>
                     <div>
                         <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">Confirm New Password</label>
-                        <input type="password" placeholder="Confirm new password" class="form-input w-full rounded-xl px-4 py-3 text-sm">
+                        <input type="password" name="new_password_confirmation" placeholder="Confirm new password" class="form-input w-full rounded-xl px-4 py-3 text-sm" required minlength="8">
                     </div>
                     <div class="pt-4 flex justify-end">
-                        <button type="button" class="px-8 py-3 rounded-full font-bold text-[#040d0a] bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 transition-all shadow-[0_5px_15px_rgba(20,184,166,0.2)]">
+                        <button type="submit" class="px-8 py-3 rounded-full font-bold text-[#040d0a] bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 transition-all shadow-[0_5px_15px_rgba(20,184,166,0.2)]">
                             Update Password
                         </button>
                     </div>
                 </form>
             </div>
 
-            <!-- Tab: Preferences -->
-            <div id="tab-preferences" class="tab-content hidden glass-panel p-8 md:p-10 rounded-3xl relative overflow-hidden">
+                        <div id="tab-preferences" class="tab-content hidden glass-panel p-8 md:p-10 rounded-3xl relative overflow-hidden">
                 <h3 class="text-2xl font-bold mb-6">Learning Preferences</h3>
                 <form class="space-y-6">
                     <div class="flex items-center justify-between pb-6 border-b border-white/10">
@@ -249,19 +258,13 @@
 
     <script>
         function switchTab(tabId, element) {
-            // Hide all tabs
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.add('hidden');
             });
-            // Show selected tab
             document.getElementById('tab-' + tabId).classList.remove('hidden');
-
-            // Reset all sidebar links styles
             document.querySelectorAll('.tab-link').forEach(link => {
                 link.className = 'tab-link flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-colors';
             });
-
-            // Set active style for clicked link
             element.className = 'tab-link active flex items-center gap-3 px-4 py-3 rounded-xl bg-teal-500/20 text-teal-300 font-medium border border-teal-500/30 transition-colors';
         }
     </script>

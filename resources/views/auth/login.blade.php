@@ -34,25 +34,20 @@
 
 <body class="bg-[#050b09] min-h-screen flex items-center justify-center text-white overflow-hidden selection:bg-teal-500/30">
 
-    <!-- Background -->
-    <div class="absolute inset-0 -z-10">
+        <div class="absolute inset-0 -z-10">
         <img src="{{ Vite::asset('resources/img/anatomy_hero_bg.png') }}"
              class="w-full h-full object-cover opacity-20 blur-sm mix-blend-screen">
     </div>
 
-    <!-- CENTER WRAPPER -->
-    <div class="w-full flex items-center justify-center px-6 py-8">
+        <div class="w-full flex items-center justify-center px-6 py-8">
 
-        <!-- MAIN CARD -->
-        <div class="w-full max-w-6xl max-h-[90vh]">
+                <div class="w-full max-w-6xl max-h-[90vh]">
 
             <div class="glass-panel w-full h-full rounded-3xl flex flex-col lg:flex-row overflow-hidden shadow-2xl">
 
-                <!-- LEFT SIDE (Info) -->
-                <div class="lg:w-[65%] p-10 sm:p-14 md:p-16 flex flex-col justify-between border-r border-white/10 relative overflow-hidden">
+                                <div class="lg:w-[65%] p-10 sm:p-14 md:p-16 flex flex-col justify-between border-r border-white/10 relative overflow-hidden">
                     
-                    <!-- Logo -->
-                    <div class="mb-10 relative z-10">
+                                        <div class="mb-10 relative z-10">
                         <a href="/" class="flex items-center gap-3 group inline-flex">
                             <div class="w-16 h-16 relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
                                 <div class="absolute inset-0 border-2 border-teal-500/30 rounded-xl transform rotate-12 group-hover:rotate-90 transition-all duration-700"></div>
@@ -89,13 +84,11 @@
                         </a>
                     </div>
                     
-                    <!-- Decorative Graphic element -->
-                    <div class="absolute -bottom-20 -right-20 w-96 h-96 bg-teal-900/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen"></div>
+                                        <div class="absolute -bottom-20 -right-20 w-96 h-96 bg-teal-900/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen"></div>
 
                 </div>
 
-                <!-- RIGHT SIDE (Form) -->
-                <div class="lg:w-[35%] p-10 sm:p-12 flex flex-col justify-center bg-black/40">
+                                <div class="lg:w-[35%] p-10 sm:p-12 flex flex-col justify-center bg-black/40">
 
                     <h2 class="text-2xl font-semibold mb-2">Sign In</h2>
                     <p class="text-gray-400 text-sm mb-8">

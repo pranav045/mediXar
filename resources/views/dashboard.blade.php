@@ -16,8 +16,7 @@
 </head>
 <body class="bg-[#050b09] text-white min-h-screen flex flex-col selection:bg-teal-500/30 pb-20">
 
-    <!-- Ambient Background -->
-    <div class="fixed inset-0 -z-20 pointer-events-none">
+        <div class="fixed inset-0 -z-20 pointer-events-none">
         <div class="absolute top-[0%] right-[0%] w-[40vw] h-[40vw] rounded-full bg-teal-900/15 blur-[120px] mix-blend-screen"></div>
         <div class="absolute bottom-[0%] left-[0%] w-[50vw] h-[50vw] rounded-full bg-emerald-900/10 blur-[150px] mix-blend-screen"></div>
     </div>
@@ -25,8 +24,7 @@
         <img src="{{ Vite::asset('resources/img/anatomy_hero_bg.png') }}" class="w-full h-full object-cover opacity-10 blur-xl mix-blend-screen">
     </div>
 
-    <!-- Navbar -->
-    <nav class="w-full z-50 glass-nav h-[72px] sticky top-0">
+        <nav class="w-full z-50 glass-nav h-[72px] sticky top-0">
         <div class="h-full px-6 max-w-7xl mx-auto flex items-center justify-between">
             <a href="/" class="flex items-center gap-3 group">
                 <div class="w-12 h-12 relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
@@ -39,8 +37,7 @@
                 <span class="text-xl font-bold tracking-widest text-white">Medix<span class="text-teal-400">AR</span></span>
             </a>
 
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex items-center gap-6">
+                        <div class="hidden md:flex items-center gap-6">
                 <a href="/anatomy" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors">3D Explorer</a>
                 <a href="/quiz" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors">Quizzes</a>
                 <a href="/about" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors">About Us</a>
@@ -49,14 +46,12 @@
                 </a>
             </div>
 
-            <!-- Mobile Menu Button -->
-            <button class="md:hidden text-white hover:text-teal-400 transition" id="mobile-menu-btn">
+                        <button class="md:hidden text-white hover:text-teal-400 transition" id="mobile-menu-btn">
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
             </button>
         </div>
         
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu" class="hidden md:hidden absolute top-[72px] left-0 w-full glass-panel border-t-0 border-x-0 shadow-2xl flex flex-col p-4 gap-4">
+                <div id="mobile-menu" class="hidden md:hidden absolute top-[72px] left-0 w-full glass-panel border-t-0 border-x-0 shadow-2xl flex flex-col p-4 gap-4">
             <a href="/anatomy" class="p-3 rounded-lg hover:bg-white/5 text-gray-300 font-medium">3D Explorer</a>
             <a href="/quiz" class="p-3 rounded-lg hover:bg-white/5 text-gray-300 font-medium">Quizzes</a>
             <a href="/about" class="p-3 rounded-lg hover:bg-white/5 text-gray-300 font-medium">About Us</a>
@@ -64,13 +59,11 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-6 pt-10 flex flex-col gap-10">
+        <main class="flex-grow max-w-7xl w-full mx-auto px-6 pt-10 flex flex-col gap-10">
 
-        <!-- Welcome Banner -->
-        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-white/10">
+                <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-white/10">
             <div>
-                <h1 class="text-4xl md:text-5xl font-bold mb-2">Welcome back, <span class="text-teal-400">Jane</span></h1>
+                <h1 class="text-4xl md:text-5xl font-bold mb-2">Welcome back, <span class="text-teal-400">{{ Auth::user()->name ?? 'Guest' }}</span></h1>
                 <p class="text-gray-400 text-lg">Ready to continue exploring the human body?</p>
             </div>
             <div class="flex items-center gap-4 bg-teal-900/20 px-6 py-3 rounded-2xl border border-teal-500/20">
@@ -79,41 +72,49 @@
                 </div>
                 <div>
                     <p class="text-xs text-teal-500 font-bold tracking-widest uppercase">Current Streak</p>
-                    <p class="text-xl font-bold text-white">12 Days 🔥</p>
+                    <p class="text-xl font-bold text-white">{{ Auth::user()->learning_streak ?? 0 }} Days 🔥</p>
                 </div>
             </div>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <!-- Left Column (2/3) -->
-            <div class="lg:col-span-2 space-y-8">
+                        <div class="lg:col-span-2 space-y-8">
                 
-                <!-- Quick Continue -->
-                <section>
+                                <section>
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-xl font-bold">Pick up where you left off</h2>
                     </div>
                     <div class="glass-panel p-2 rounded-3xl flex flex-col sm:flex-row overflow-hidden group">
-                        <div class="w-full sm:w-1/3 h-48 sm:h-auto bg-black/50 rounded-2xl relative overflow-hidden flex items-center justify-center">
-                            <img src="{{ Vite::asset('resources/img/anatomy_hero_bg.png') }}" class="w-full h-full object-cover opacity-50 mix-blend-screen group-hover:scale-110 transition duration-700">
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <svg class="w-12 h-12 text-teal-400 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        @if(isset($recentModels) && $recentModels->count() > 0)
+                            @php $lastModel = $recentModels->first(); @endphp
+                            <div class="w-full sm:w-1/3 h-48 sm:h-auto bg-black/50 rounded-2xl relative overflow-hidden flex items-center justify-center">
+                                <img src="{{ $lastModel->thumbnail ? asset('storage/'.$lastModel->thumbnail) : Vite::asset('resources/img/anatomy_hero_bg.png') }}" class="w-full h-full object-cover opacity-50 mix-blend-screen group-hover:scale-110 transition duration-700">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <svg class="w-12 h-12 text-teal-400 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                </div>
                             </div>
-                        </div>
-                        <div class="p-8 flex flex-col justify-center sm:w-2/3">
-                            <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold tracking-widest uppercase mb-3 w-fit">Nervous System</span>
-                            <h3 class="text-3xl font-bold mb-2">The Brain Stem</h3>
-                            <p class="text-gray-400 mb-6 line-clamp-2">Review the midbrain, pons, and medulla oblongata, including the cranial nerve nuclei.</p>
-                            <a href="/anatomy" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black font-bold hover:bg-teal-400 transition w-fit">
-                                Continue in 3D →
-                            </a>
-                        </div>
+                            <div class="p-8 flex flex-col justify-center sm:w-2/3">
+                                <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold tracking-widest uppercase mb-3 w-fit">{{ $lastModel->category }}</span>
+                                <h3 class="text-3xl font-bold mb-2">{{ $lastModel->title }}</h3>
+                                <p class="text-gray-400 mb-6 line-clamp-2">{{ $lastModel->description }}</p>
+                                <a href="{{ route('anatomy.show', $lastModel->id) }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black font-bold hover:bg-teal-400 transition w-fit">
+                                    Continue in 3D →
+                                </a>
+                            </div>
+                        @else
+                            <div class="p-8 flex flex-col justify-center w-full">
+                                <h3 class="text-2xl font-bold mb-2">Start Exploring!</h3>
+                                <p class="text-gray-400 mb-6">You haven't viewed any 3D models yet. Head over to the Anatomy Explorer to get started.</p>
+                                <a href="{{ route('anatomy') }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black font-bold hover:bg-teal-400 transition w-fit">
+                                    Go to 3D Explorer →
+                                </a>
+                            </div>
+                        @endif
                     </div>
                 </section>
 
-                <!-- Recommended Modules -->
-                <section>
+                                <section>
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-xl font-bold">Recommended for you</h2>
                         <a href="/anatomy" class="text-sm text-teal-400 hover:text-white transition">View all</a>
@@ -144,46 +145,29 @@
 
             </div>
 
-            <!-- Right Column (1/3) -->
-            <div class="space-y-8">
+                        <div class="space-y-8">
                 
-                <!-- Recent Quizzes -->
-                <section>
+                                <section>
                     <h2 class="text-xl font-bold mb-4">Recent Quizzes</h2>
                     <div class="glass-panel p-6 rounded-3xl flex flex-col gap-4">
                         
-                        <div class="flex items-center justify-between pb-4 border-b border-white/10">
-                            <div>
-                                <h4 class="font-semibold text-white">Cranial Nerves</h4>
-                                <p class="text-xs text-gray-400">Nervous System</p>
+                        @if(isset($recentQuizzes) && $recentQuizzes->count() > 0)
+                            @foreach($recentQuizzes as $attempt)
+                            <div class="flex items-center justify-between pb-4 border-b border-white/10 last:border-0 last:pb-0">
+                                <div>
+                                    <h4 class="font-semibold text-white">{{ $attempt->quiz->title ?? 'Unknown Quiz' }}</h4>
+                                    <p class="text-xs text-gray-400">{{ $attempt->quiz->category ?? 'General' }}</p>
+                                </div>
+                                <div class="text-right">
+                                    @php $percentage = ($attempt->score / max($attempt->total_questions, 1)) * 100; @endphp
+                                    <span class="{{ $percentage >= 50 ? 'text-emerald-400' : 'text-red-400' }} font-bold">{{ round($percentage) }}%</span>
+                                    <p class="text-[10px] text-gray-500 uppercase tracking-wider">{{ $percentage >= 50 ? 'Passed' : 'Failed' }}</p>
+                                </div>
                             </div>
-                            <div class="text-right">
-                                <span class="text-emerald-400 font-bold">92%</span>
-                                <p class="text-[10px] text-gray-500 uppercase tracking-wider">Passed</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between pb-4 border-b border-white/10">
-                            <div>
-                                <h4 class="font-semibold text-white">Heart Valves</h4>
-                                <p class="text-xs text-gray-400">Cardiovascular</p>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-emerald-400 font-bold">85%</span>
-                                <p class="text-[10px] text-gray-500 uppercase tracking-wider">Passed</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h4 class="font-semibold text-white">Bones of the Hand</h4>
-                                <p class="text-xs text-gray-400">Skeletal System</p>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-red-400 font-bold">60%</span>
-                                <p class="text-[10px] text-gray-500 uppercase tracking-wider">Failed</p>
-                            </div>
-                        </div>
+                            @endforeach
+                        @else
+                            <p class="text-sm text-gray-400">No recent quizzes found.</p>
+                        @endif
 
                         <a href="/quiz" class="mt-2 w-full py-3 rounded-xl border border-white/10 hover:bg-white/5 text-center text-sm font-semibold transition">
                             Take a new Quiz
@@ -191,19 +175,7 @@
                     </div>
                 </section>
 
-                <!-- AR App Promo -->
-                <section>
-                    <div class="glass-panel p-8 rounded-3xl relative overflow-hidden bg-gradient-to-br from-teal-900/40 to-emerald-900/20 border-teal-500/30">
-                        <div class="relative z-10">
-                            <h3 class="text-xl font-bold mb-2">Try MedixAR on Mobile</h3>
-                            <p class="text-sm text-teal-100/70 mb-6">Experience 1:1 scale anatomical models in your physical space with our native AR viewer.</p>
-                            <button class="px-6 py-2 bg-teal-500 text-black font-bold rounded-full text-sm hover:bg-teal-400 transition w-full">
-                                Get Download Link
-                            </button>
-                        </div>
-                        <svg class="absolute -bottom-10 -right-10 w-48 h-48 text-teal-500/10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zM9.5 16.5l-4-4 1.41-1.41L9.5 13.67l7.09-7.09L18 8l-8.5 8.5z"/></svg>
-                    </div>
-                </section>
+
 
             </div>
         </div>
