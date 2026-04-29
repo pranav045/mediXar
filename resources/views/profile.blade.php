@@ -59,7 +59,11 @@
                     <div class="absolute inset-0 border-[1.5px] border-emerald-400/30 rounded-lg transform -rotate-12 group-hover:-rotate-90 transition-all duration-700"></div>
                     <div class="w-6 h-6 bg-gradient-to-br from-teal-400 to-emerald-500 rounded flex items-center justify-center relative z-10 shadow-[0_0_15px_rgba(45,212,191,0.5)]">
                         <svg class="w-3.5 h-3.5 text-[#050b09]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                            <path d="M12 2v20M9 4.5l6 2.5M9 7l6 2.5M9 14.5l6-2.5M9 17l6-2.5M12 2l-2 2M12 2l2 2M12 22l-2-2M12 22l2-2M7 11c0 2.76 2.24 5 5 5s5-2.24 5-5M7 13c0 2.76 2.24 5 5 5s5-2.24 5-5" />
+                            <path d="M6 4h-1a2 2 0 0 0 -2 2v3.5a5.5 5.5 0 0 0 11 0v-3.5a2 2 0 0 0 -2 -2h-1" />
+                            <path d="M8 15a6 6 0 1 0 12 0v-3" />
+                            <path d="M11 3v2" />
+                            <path d="M6 3v2" />
+                            <path d="M18 10a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
                         </svg>
                     </div>
                 </div>
