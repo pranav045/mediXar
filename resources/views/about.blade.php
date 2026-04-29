@@ -29,11 +29,7 @@
     <nav class="w-full z-50 glass-nav h-[72px] sticky top-0">
         <div class="h-full px-6 max-w-7xl mx-auto flex items-center justify-between">
             <a href="/" class="flex items-center gap-3 group">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center shadow-[0_0_15px_rgba(45,212,191,0.5)]">
-                    <svg class="w-5 h-5 text-[#050b09]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                </div>
+                <img src="{{ Vite::asset('resources/img/medixar_logo.png') }}" class="h-8 w-auto rounded-lg shadow-[0_0_15px_rgba(45,212,191,0.5)]">
                 <span class="text-xl font-bold tracking-widest text-white">Medix<span class="text-teal-400">AR</span></span>
             </a>
 
@@ -157,7 +153,7 @@
     <footer class="w-full py-8 mt-auto border-t border-white/10 bg-black/40">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-2 opacity-50">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                <img src="{{ Vite::asset('resources/img/medixar_logo.png') }}" class="h-5 w-auto rounded">
                 <span class="font-bold tracking-widest text-sm">MedixAR</span>
             </div>
             <p class="text-xs text-gray-500">© 2026 MedixAR EdTech. All rights reserved.</p>

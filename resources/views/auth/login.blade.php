@@ -54,11 +54,7 @@
                     <!-- Logo -->
                     <div class="mb-10 relative z-10">
                         <a href="/" class="flex items-center gap-3 group inline-flex">
-                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center shadow-[0_0_15px_rgba(45,212,191,0.5)]">
-                                <svg class="w-6 h-6 text-[#050b09]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                </svg>
-                            </div>
+                            <img src="{{ Vite::asset('resources/img/medixar_logo.png') }}" class="h-10 w-auto rounded-xl shadow-[0_0_15px_rgba(45,212,191,0.5)]">
                             <span class="text-2xl font-bold tracking-widest text-white">Medix<span class="text-teal-400">AR</span></span>
                         </a>
                     </div>
