@@ -33,8 +33,12 @@
                     <div class="absolute inset-0 border-[1.5px] border-teal-500/30 rounded-lg transform rotate-12 group-hover:rotate-90 transition-all duration-700"></div>
                     <div class="absolute inset-0 border-[1.5px] border-emerald-400/30 rounded-lg transform -rotate-12 group-hover:-rotate-90 transition-all duration-700"></div>
                     <div class="w-6 h-6 bg-gradient-to-br from-teal-400 to-emerald-500 rounded flex items-center justify-center relative z-10 shadow-[0_0_15px_rgba(45,212,191,0.5)]">
-                        <svg class="w-3.5 h-3.5 text-[#050b09]" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M19 10h-5V5c0-1.1-.9-2-2-2s-2 .9-2 2v5H5c-1.1 0-2 .9-2 2s.9 2 2 2h5v5c0 1.1.9 2 2 2s2-.9 2-2v-5h5c1.1 0 2-.9 2-2s-.9-2-2-2z"/>
+                        <svg class="w-3.5 h-3.5 text-[#050b09]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <path d="M6 4h-1a2 2 0 0 0 -2 2v3.5a5.5 5.5 0 0 0 11 0v-3.5a2 2 0 0 0 -2 -2h-1" />
+                            <path d="M8 15a6 6 0 1 0 12 0v-3" />
+                            <path d="M11 3v2" />
+                            <path d="M6 3v2" />
+                            <path d="M18 10a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
                         </svg>
                     </div>
                 </div>
