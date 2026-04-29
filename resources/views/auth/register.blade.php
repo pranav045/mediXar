@@ -54,10 +54,14 @@
                     <!-- Logo -->
                     <div class="mb-10 relative z-10">
                         <a href="/" class="flex items-center gap-3 group inline-flex">
-                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center shadow-[0_0_15px_rgba(45,212,191,0.5)]">
-                                <svg class="w-6 h-6 text-[#050b09]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                </svg>
+                            <div class="w-12 h-12 relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                                <div class="absolute inset-0 border-2 border-teal-500/20 rounded-xl transform rotate-12 group-hover:rotate-90 transition-all duration-700"></div>
+                                <div class="absolute inset-0 border-2 border-emerald-400/20 rounded-xl transform -rotate-12 group-hover:-rotate-90 transition-all duration-700"></div>
+                                <div class="w-8 h-8 bg-gradient-to-br from-teal-400 to-emerald-500 rounded-lg shadow-[0_0_20px_rgba(45,212,191,0.6)] flex items-center justify-center relative z-10">
+                                    <svg class="w-5 h-5 text-[#050b09]" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M19 10h-5V5c0-1.1-.9-2-2-2s-2 .9-2 2v5H5c-1.1 0-2 .9-2 2s.9 2 2 2h5v5c0 1.1.9 2 2 2s2-.9 2-2v-5h5c1.1 0 2-.9 2-2s-.9-2-2-2z"/>
+                                    </svg>
+                                </div>
                             </div>
                             <span class="text-2xl font-bold tracking-widest text-white">Medix<span class="text-teal-400">AR</span></span>
                         </a>

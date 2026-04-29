@@ -29,10 +29,14 @@
     <nav class="w-full z-50 glass-nav h-[72px] sticky top-0">
         <div class="h-full px-6 max-w-7xl mx-auto flex items-center justify-between">
             <a href="/" class="flex items-center gap-3 group">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center shadow-[0_0_15px_rgba(45,212,191,0.5)]">
-                    <svg class="w-5 h-5 text-[#050b09]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
+                <div class="w-9 h-9 relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 border-[1.5px] border-teal-500/30 rounded-lg transform rotate-12 group-hover:rotate-90 transition-all duration-700"></div>
+                    <div class="absolute inset-0 border-[1.5px] border-emerald-400/30 rounded-lg transform -rotate-12 group-hover:-rotate-90 transition-all duration-700"></div>
+                    <div class="w-6 h-6 bg-gradient-to-br from-teal-400 to-emerald-500 rounded flex items-center justify-center relative z-10 shadow-[0_0_15px_rgba(45,212,191,0.5)]">
+                        <svg class="w-3.5 h-3.5 text-[#050b09]" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 10h-5V5c0-1.1-.9-2-2-2s-2 .9-2 2v5H5c-1.1 0-2 .9-2 2s.9 2 2 2h5v5c0 1.1.9 2 2 2s2-.9 2-2v-5h5c1.1 0 2-.9 2-2s-.9-2-2-2z"/>
+                        </svg>
+                    </div>
                 </div>
                 <span class="text-xl font-bold tracking-widest text-white">Medix<span class="text-teal-400">AR</span></span>
             </a>
