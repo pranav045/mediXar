@@ -57,14 +57,13 @@
                 <span class="text-xl font-bold tracking-widest text-white">Medix<span class="text-teal-400">AR</span></span>
             </a>
 
-            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
-                <a href="#how-it-works" class="hover:text-teal-400 transition-colors">How it Works</a>
-                <a href="#features" class="hover:text-teal-400 transition-colors">Features</a>
-                <a href="#testimonials" class="hover:text-teal-400 transition-colors">Testimonials</a>
-                <a href="/contact" class="hover:text-teal-400 transition-colors">Contact</a>
-            </div>
-
-            <div class="flex items-center gap-4">
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#how-it-works" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors">How it Works</a>
+                <a href="#features" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors">Features</a>
+                <a href="/about" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors">About Us</a>
+                <a href="/contact" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors">Contact</a>
+                <div class="w-px h-5 bg-white/20"></div>
                 @if (Route::has('login'))
                     @auth
                         <a href="{{ url('/dashboard') }}" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors">Dashboard</a>

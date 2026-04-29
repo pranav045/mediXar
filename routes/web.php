@@ -11,6 +11,10 @@ Route::get('/', function () {
 Route::get('/contact', [ContactController::class,'index']);
 Route::post('/contact', [ContactController::class,'send']);
 
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
 // Authentication Views (UI Only)
 Route::get('/login', function () {
     return view('auth.login');
