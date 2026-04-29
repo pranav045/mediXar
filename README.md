@@ -1,59 +1,92 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="resources/img/image.png" alt="MedixAR Logo" width="100">
 </p>
 
-## About Laravel
+<h1 align="center">MedixAR | Master Human Anatomy</h1>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<p align="center">
+  <strong>An advanced, interactive EdTech platform for medical students to explore human anatomy in 3D and Augmented Reality.</strong>
+</p>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🚀 Overview
 
-## Learning Laravel
+**MedixAR** is a premium educational platform built with Laravel. It bridges the gap between traditional textbook learning and modern interactive visualization by providing high-fidelity 3D anatomical models (like the Human Heart, Brain Stem, and Skull) that can be viewed directly in the browser or experienced in your physical space via AR.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+The project features a cutting-edge **glassmorphic design system** styled with Tailwind CSS, offering a futuristic, sleek, and immersive user experience.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## ✨ Key Features
 
-## Laravel Sponsors
+- 🧬 **Interactive 3D Explorer**: Utilize Google's `<model-viewer>` web component to rotate, zoom, and interact with anatomical `.glb` models natively in the browser.
+- 📱 **Augmented Reality (AR) Ready**: Mobile users can project 1:1 scale anatomical models directly into their physical environment using WebXR and Scene Viewer.
+- 🎯 **Gamified Quizzes**: Built-in interactive assessment modules to test knowledge on specific anatomical systems (Nervous, Cardiovascular, Skeletal, etc.).
+- 📊 **Student Dashboard**: A personalized hub to track study streaks, quizzes passed, and recently viewed modules.
+- 🎨 **Premium UI/UX**: A dark-mode, glassmorphic interface built entirely with custom Tailwind CSS utility classes.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🛠️ Technology Stack
 
-### Premium Partners
+- **Backend Framework:** Laravel 11.x (PHP)
+- **Frontend Styling:** Tailwind CSS (via Vite pipeline)
+- **3D/AR Engine:** `<model-viewer>` (Google)
+- **Architecture:** Blade Templating Engine
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 📂 Project Structure (Frontend Views)
 
-## Contributing
+The frontend prototype is fully structured and modularized. The key views can be found in `resources/views/`:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- `welcome.blade.php`: The main landing page featuring multi-section scrolling and a holographic background.
+- `anatomy.blade.php`: The core 3D explorer workspace with dynamic JavaScript sidebars for module switching.
+- `dashboard.blade.php`: The authenticated user's home hub for tracking progress.
+- `profile.blade.php`: User settings interface with interactive tabs for Personal Details, Security, and Preferences.
+- `quiz.blade.php`: The interactive assessment UI.
+- `contact.blade.php`: A split-layout contact form wired up to a Laravel Mailable.
+- `auth/*`: Custom glassmorphic views for Login, Register, and Password Reset.
 
-## Code of Conduct
+## ⚙️ Installation & Setup
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+To run MedixAR locally on your machine, follow these steps:
 
-## Security Vulnerabilities
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Gomit-Dev/mediXar.git
+   cd mediXar/app
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+2. **Install PHP Dependencies:**
+   ```bash
+   composer install
+   ```
 
-## License
+3. **Install & Compile Frontend Assets:**
+   ```bash
+   npm install
+   npm run build
+   ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+4. **Environment Configuration:**
+   Copy the example `.env` file and generate an application key:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+   *(Make sure to configure your `DB_*` and `MAIL_*` credentials in the `.env` file).*
+
+5. **Run the Development Server:**
+   ```bash
+   php artisan serve
+   ```
+   Navigate to `http://127.0.0.1:8000` in your browser.
+
+## ⚠️ Notes on 3D Assets
+
+By default, the anatomy module uses placeholder `.glb` models for demonstration purposes. To add your own high-fidelity medical models:
+1. Download or export your 3D models in the `.glb` format.
+2. Place the files in the `public/models/` directory.
+3. Update the `anatomyData` array at the bottom of `resources/views/anatomy.blade.php` to point to your new file names.
+
+## 👨‍💻 Developer
+
+Developed by **[Gomit-Dev](https://github.com/Gomit-Dev)**.
+
+*This project is currently in active development. The frontend UI prototype is complete, and backend controller/database logic is currently being implemented.*
