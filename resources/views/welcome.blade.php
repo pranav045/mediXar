@@ -49,7 +49,11 @@
     <nav class="fixed top-0 w-full z-50 glass-nav transition-all duration-300">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <a href="/" class="flex items-center gap-3 group">
-                <img src="{{ Vite::asset('resources/img/medixar_logo.png') }}" class="h-8 w-auto rounded-lg shadow-[0_0_15px_rgba(45,212,191,0.5)] group-hover:shadow-[0_0_25px_rgba(45,212,191,0.8)] transition-all">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center shadow-[0_0_15px_rgba(45,212,191,0.5)] group-hover:shadow-[0_0_25px_rgba(45,212,191,0.8)] transition-all">
+                    <svg class="w-5 h-5 text-[#050b09]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
                 <span class="text-xl font-bold tracking-widest text-white">Medix<span class="text-teal-400">AR</span></span>
             </a>
 
