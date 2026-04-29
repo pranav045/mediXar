@@ -41,6 +41,7 @@
             <div class="hidden md:flex items-center gap-6">
                 <a href="/anatomy" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors">3D Explorer</a>
                 <a href="/quiz" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors">Quizzes</a>
+                <a href="/about" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors">About Us</a>
                 <a href="/profile" class="w-8 h-8 rounded-full bg-teal-500/20 border border-teal-500/50 flex items-center justify-center text-teal-300 hover:bg-teal-500/40 transition">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                 </a>
@@ -56,6 +57,7 @@
         <div id="mobile-menu" class="hidden md:hidden absolute top-[72px] left-0 w-full glass-panel border-t-0 border-x-0 shadow-2xl flex flex-col p-4 gap-4">
             <a href="/anatomy" class="p-3 rounded-lg hover:bg-white/5 text-gray-300 font-medium">3D Explorer</a>
             <a href="/quiz" class="p-3 rounded-lg hover:bg-white/5 text-gray-300 font-medium">Quizzes</a>
+            <a href="/about" class="p-3 rounded-lg hover:bg-white/5 text-gray-300 font-medium">About Us</a>
             <a href="/profile" class="p-3 rounded-lg hover:bg-white/5 text-gray-300 font-medium">My Profile</a>
         </div>
     </nav>
