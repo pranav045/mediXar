@@ -189,7 +189,7 @@
             modelSrc: model.file_path.startsWith('http') ? model.file_path : '/storage/' + model.file_path
         }));
 
-        let currentModuleId = anatomyData.length > 0 ? anatomyData[0].id : null;
+        let currentModuleId = {!! isset($selectedModelId) ? $selectedModelId : (count($models) > 0 ? $models[0]->id : 'null') !!};
         const modelViewer = document.getElementById('main-viewer');
         const loadingOverlay = document.getElementById('loading-overlay');
         const viewerHint = document.getElementById('viewer-hint');
@@ -224,8 +224,8 @@
                 moduleList.appendChild(btn);
             });
         }
-        function selectModule(id) {
-            if (currentModuleId === id) return;
+        function selectModule(id, force = false) {
+            if (!force && currentModuleId === id) return;
             currentModuleId = id;
             const data = anatomyData.find(m => m.id === id);
             viewerHint.innerText = 'Loading model...';
@@ -256,7 +256,7 @@
         });
         if (anatomyData.length > 0) {
             renderButtons();
-            selectModule(anatomyData[0].id);
+            selectModule(currentModuleId, true);
         } else {
             moduleList.innerHTML = '<p class="text-sm text-gray-400 p-4">No models available.</p>';
             viewerHint.innerText = 'No models available.';

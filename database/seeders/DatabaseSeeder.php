@@ -26,73 +26,80 @@ class DatabaseSeeder extends Seeder
         // 10 Anatomy Models
         $models = [
             [
-                'title' => 'Brain Stem',
-                'description' => 'The brainstem is the posterior part of the brain, adjoining and structurally continuous with the spinal cord.',
-                'file_path' => 'https://modelviewer.dev/shared-assets/models/Astronaut.glb', 
+                'title' => 'Nervous System',
+                'description' => 'A comprehensive view of the human nervous system, including the brain and spinal cord.',
+                'file_path' => 'models/nerves.glb', 
                 'category' => 'Nervous System',
                 'is_premium' => false
             ],
             [
                 'title' => 'Human Skull',
                 'description' => 'The skull is a bony structure that forms the head in vertebrates.',
-                'file_path' => 'https://modelviewer.dev/shared-assets/models/NeilArmstrong.glb', 
+                'file_path' => 'models/Skull.glb', 
                 'category' => 'Skeletal System',
                 'is_premium' => false
             ],
             [
                 'title' => 'Human Heart',
                 'description' => 'The heart is a muscular organ that pumps blood through the blood vessels of the circulatory system.',
-                'file_path' => 'https://modelviewer.dev/shared-assets/models/Astronaut.glb', 
+                'file_path' => 'models/heart.glb', 
                 'category' => 'Cardiovascular',
                 'is_premium' => true
             ],
             [
-                'title' => 'Lumbar Vertebrae',
-                'description' => 'The lumbar vertebrae are the five vertebrae between the rib cage and the pelvis.',
-                'file_path' => 'https://modelviewer.dev/shared-assets/models/NeilArmstrong.glb', 
+                'title' => 'Full Skeleton',
+                'description' => 'The complete human skeletal framework supporting the body structure.',
+                'file_path' => 'models/skeleton.glb', 
                 'category' => 'Skeletal System',
                 'is_premium' => false
             ],
             [
-                'title' => 'Human Eye',
-                'description' => 'The eye is a region of the central nervous system which marks the beginning of the visual system.',
-                'file_path' => 'https://modelviewer.dev/shared-assets/models/Astronaut.glb', 
-                'category' => 'Nervous System',
+                'title' => 'Blood Vessels',
+                'description' => 'The network of arteries, veins, and capillaries that transport blood.',
+                'file_path' => 'models/blood.glb', 
+                'category' => 'Cardiovascular',
                 'is_premium' => false
             ],
             [
-                'title' => 'Biceps Brachii',
-                'description' => 'The biceps is a large muscle that lies on the front of the upper arm between the shoulder and the elbow.',
-                'file_path' => 'https://modelviewer.dev/shared-assets/models/NeilArmstrong.glb', 
+                'title' => 'Muscular System',
+                'description' => 'The system of muscles that enables movement of the body.',
+                'file_path' => 'models/muscle.glb', 
                 'category' => 'Muscular System',
                 'is_premium' => true
             ],
             [
                 'title' => 'Left Kidney',
                 'description' => 'The kidneys are two reddish-brown bean-shaped organs found in vertebrates.',
-                'file_path' => 'https://modelviewer.dev/shared-assets/models/Astronaut.glb', 
+                'file_path' => 'models/kidney.glb', 
                 'category' => 'Urinary System',
                 'is_premium' => false
             ],
             [
                 'title' => 'Human Lungs',
                 'description' => 'The lungs are the primary organs of the respiratory system in humans.',
-                'file_path' => 'https://modelviewer.dev/shared-assets/models/NeilArmstrong.glb', 
+                'file_path' => 'models/lung.glb', 
                 'category' => 'Respiratory System',
                 'is_premium' => true
             ],
             [
                 'title' => 'Stomach',
                 'description' => 'The stomach is a muscular, hollow organ in the gastrointestinal tract of humans.',
-                'file_path' => 'https://modelviewer.dev/shared-assets/models/Astronaut.glb', 
+                'file_path' => 'models/stomach.glb', 
                 'category' => 'Digestive System',
                 'is_premium' => false
             ],
             [
-                'title' => 'Femur Bone',
-                'description' => 'The femur, or thigh bone, is the most proximal bone of the leg in tetrapod vertebrates.',
-                'file_path' => 'https://modelviewer.dev/shared-assets/models/NeilArmstrong.glb', 
-                'category' => 'Skeletal System',
+                'title' => 'Liver',
+                'description' => 'The liver is a large, meaty organ that sits on the right side of the belly.',
+                'file_path' => 'models/liver.glb', 
+                'category' => 'Digestive System',
+                'is_premium' => false
+            ],
+            [
+                'title' => 'Internal Organs',
+                'description' => 'A collective view of the primary internal organs of the human body.',
+                'file_path' => 'models/organs.glb', 
+                'category' => 'General Anatomy',
                 'is_premium' => false
             ]
         ];

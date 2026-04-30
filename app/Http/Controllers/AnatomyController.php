@@ -14,8 +14,9 @@ class AnatomyController extends Controller
     }
 
     public function show($id) {
-        $model = AnatomyModel::with('hotspots')->findOrFail($id);
-        return view('anatomy.show', compact('model'));
+        $models = AnatomyModel::all();
+        $selectedModelId = $id;
+        return view('anatomy', compact('models', 'selectedModelId'));
     }
 
     public function trackView($id) {

@@ -119,7 +119,7 @@
                 </div>
                 <div class="w-40 h-40 rounded-full bg-gradient-to-tr from-teal-500 to-emerald-400 p-1 mb-6 relative shadow-[0_0_20px_rgba(45,212,191,0.5)]">
                     <div class="w-full h-full rounded-full bg-[#050b09] flex items-center justify-center overflow-hidden">
-                        <img src="{{ asset('img/gomit.png') }}" alt="Gomit Saha" class="w-full h-full object-cover">
+                        <img src="{{ asset('img/gomit.png') }}?v={{ time() }}" alt="Gomit Saha" class="w-full h-full object-cover">
                     </div>
                 </div>
                 <h3 class="text-3xl font-bold mb-1">Gomit Saha</h3>
