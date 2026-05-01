@@ -23,15 +23,26 @@ class QuizController extends Controller
         $quiz = Quiz::with('questions')->findOrFail($id);
         $score = 0;
         $answers = $request->input('answers', []);
+        $results = [];
 
         foreach($quiz->questions as $question) {
-            if(isset($answers[$question->id]) && $answers[$question->id] == $question->correct_answer) {
+            $userAnswer = $answers[$question->id] ?? null;
+            $isCorrect = $userAnswer == $question->correct_answer;
+            if($isCorrect) {
                 $score++;
             }
+            $results[] = [
+                'question' => $question->question_text,
+                'user_answer' => $userAnswer,
+                'correct_answer' => $question->correct_answer,
+                'is_correct' => $isCorrect,
+                'options' => $question->options
+            ];
         }
 
+        $attempt = null;
         if(Auth::check()) {
-            QuizAttempt::create([
+            $attempt = QuizAttempt::create([
                 'user_id' => Auth::id(),
                 'quiz_id' => $quiz->id,
                 'score' => $score,
@@ -39,6 +50,12 @@ class QuizController extends Controller
             ]);
         }
 
-        return redirect()->route('quiz')->with('success', 'Quiz completed! Your score: ' . $score . '/' . $quiz->questions->count());
+        return view('quiz.result', [
+            'quiz' => $quiz,
+            'score' => $score,
+            'total' => $quiz->questions->count(),
+            'results' => $results,
+            'attempt' => $attempt
+        ]);
     }
 }

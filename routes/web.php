@@ -22,7 +22,7 @@ Route::middleware('guest')->group(function () {
     
     Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
     Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->name('password.email');
-    Route::get('/reset-password', [AuthController::class, 'showResetPassword'])->name('password.reset');
+    Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset');
     Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 });
 
@@ -43,4 +43,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/quiz', [QuizController::class, 'index'])->name('quiz');
     Route::get('/quiz/{id}', [QuizController::class, 'show'])->name('quiz.show');
     Route::post('/quiz/{id}/submit', [QuizController::class, 'submit'])->name('quiz.submit');
+
+    Route::get('/library/{slug}', [\App\Http\Controllers\StudyMaterialController::class, 'show'])->name('library.show');
 });

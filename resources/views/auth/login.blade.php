@@ -29,6 +29,30 @@
         border-color: rgba(45, 212, 191, 0.8);
         outline: none;
     }
+
+    .form-input.is-error {
+        border-color: rgba(239, 68, 68, 0.7);
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+
+    .field-error {
+        color: #f87171;
+        font-size: 0.72rem;
+        margin-top: 0.35rem;
+        padding-left: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(-8px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .alert-error {
+        animation: slideIn 0.3s ease;
+    }
     </style>
 </head>
 
@@ -91,23 +115,64 @@
                                 <div class="lg:w-[35%] p-10 sm:p-12 flex flex-col justify-center bg-black/40">
 
                     <h2 class="text-2xl font-semibold mb-2">Sign In</h2>
-                    <p class="text-gray-400 text-sm mb-8">
+                    <p class="text-gray-400 text-sm mb-6">
                         Enter your credentials to access your dashboard.
                     </p>
 
-                    <form method="POST" action="/login" class="space-y-6">
+                    {{-- Global error banner --}}
+                    @if ($errors->any())
+                    <div class="alert-error flex items-start gap-3 px-4 py-3 rounded-2xl bg-red-500/15 border border-red-500/30 mb-6">
+                        <svg class="w-4 h-4 text-red-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                        </svg>
+                        <div class="text-red-300 text-xs leading-relaxed">
+                            @foreach ($errors->all() as $error)
+                                <p>{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+
+                    {{-- Success flash (e.g. after password reset) --}}
+                    @if (session('status') || session('success'))
+                    <div class="alert-error flex items-start gap-3 px-4 py-3 rounded-2xl bg-teal-500/15 border border-teal-500/30 mb-6">
+                        <svg class="w-4 h-4 text-teal-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        <p class="text-teal-300 text-xs">{{ session('status') ?? session('success') }}</p>
+                    </div>
+                    @endif
+
+                    <form method="POST" action="/login" class="space-y-5">
                         @csrf
 
+                        {{-- Email field --}}
                         <div>
                             <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">Email Address</label>
-                            <input type="email" name="email" required placeholder="you@university.edu"
-                                class="form-input w-full rounded-full px-5 py-3.5 text-sm">
+                            <input type="email" name="email"
+                                value="{{ old('email') }}"
+                                placeholder="you@university.edu"
+                                class="form-input w-full rounded-full px-5 py-3.5 text-sm {{ $errors->has('email') ? 'is-error' : '' }}">
+                            @error('email')
+                                <p class="field-error">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                                    {{ $message }}
+                                </p>
+                            @enderror
                         </div>
 
+                        {{-- Password field --}}
                         <div>
                             <label class="text-xs text-gray-400 uppercase tracking-wider block mb-2">Password</label>
-                            <input type="password" name="password" required placeholder="••••••••"
-                                class="form-input w-full rounded-full px-5 py-3.5 text-sm">
+                            <input type="password" name="password"
+                                placeholder="••••••••"
+                                class="form-input w-full rounded-full px-5 py-3.5 text-sm {{ $errors->has('password') ? 'is-error' : '' }}">
+                            @error('password')
+                                <p class="field-error">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                                    {{ $message }}
+                                </p>
+                            @enderror
                         </div>
 
                         <div class="flex items-center justify-between text-sm">

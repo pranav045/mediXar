@@ -114,34 +114,7 @@
                     </div>
                 </section>
 
-                                <section>
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-xl font-bold">Recommended for you</h2>
-                        <a href="/anatomy" class="text-sm text-teal-400 hover:text-white transition">View all</a>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <a href="/anatomy" class="glass-card p-6 rounded-2xl flex flex-col group">
-                            <div class="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center mb-4 group-hover:bg-teal-400 group-hover:text-black transition">
-                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-                            </div>
-                            <h3 class="font-bold text-lg mb-1">Human Heart</h3>
-                            <p class="text-xs text-gray-400 mb-4">Cardiovascular System</p>
-                            <div class="w-full bg-white/10 rounded-full h-1.5 mt-auto">
-                                <div class="bg-teal-400 h-1.5 rounded-full" style="width: 45%"></div>
-                            </div>
-                        </a>
-                        <a href="/anatomy" class="glass-card p-6 rounded-2xl flex flex-col group">
-                            <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center mb-4 group-hover:bg-cyan-400 group-hover:text-black transition">
-                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
-                            </div>
-                            <h3 class="font-bold text-lg mb-1">Human Skull</h3>
-                            <p class="text-xs text-gray-400 mb-4">Skeletal System</p>
-                            <div class="w-full bg-white/10 rounded-full h-1.5 mt-auto">
-                                <div class="bg-cyan-400 h-1.5 rounded-full" style="width: 10%"></div>
-                            </div>
-                        </a>
-                    </div>
-                </section>
+
 
             </div>
 
@@ -180,7 +153,72 @@
             </div>
         </div>
 
-    </main>
+        <section class="mt-4">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-1.5 h-6 bg-emerald-500 rounded-full"></div>
+                    <h2 class="text-2xl font-bold">Biomedical Library</h2>
+                </div>
+                <a href="#" class="text-sm text-emerald-400 hover:text-white transition-all flex items-center gap-2">
+                    Open Library 
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @foreach($studyMaterials as $article)
+                <a href="{{ route('library.show', $article->slug) }}" class="glass-panel overflow-hidden rounded-3xl flex group cursor-pointer hover:border-emerald-500/30 transition-all duration-300">
+                    <div class="w-1/3 relative overflow-hidden">
+                        <img src="{{ asset('storage/'.$article->thumbnail) }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        @if($article->is_premium)
+                        <div class="absolute top-2 left-2 px-2 py-0.5 bg-amber-500/90 text-black text-[8px] font-black uppercase rounded shadow-lg">Premium</div>
+                        @endif
+                    </div>
+                    <div class="w-2/3 p-6 flex flex-col justify-center">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">{{ $article->category }}</span>
+                            <span class="text-[10px] text-gray-500">•</span>
+                            <span class="text-[10px] text-gray-400 font-medium">{{ $article->read_time }} min read</span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2 group-hover:text-emerald-400 transition-colors line-clamp-1">{{ $article->title }}</h3>
+                        <p class="text-sm text-gray-400 line-clamp-2 mb-4">{{ $article->description }}</p>
+                        <div class="flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase tracking-wider group-hover:gap-3 transition-all">
+                            Read Article 
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                        </div>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+        </section>
+
+        <section class="mt-12">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-1.5 h-6 bg-teal-500 rounded-full"></div>
+                    <h2 class="text-2xl font-bold">Recommended for You</h2>
+                </div>
+                <a href="/anatomy" class="text-sm text-teal-400 hover:text-white transition-all flex items-center gap-2">
+                    View All Models 
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                @foreach($recommendedModels as $model)
+                <a href="{{ route('anatomy.show', $model->id) }}" class="glass-panel p-4 rounded-3xl flex flex-col group relative overflow-hidden hover:border-teal-500/30 transition-all duration-300">
+                    <div class="w-full aspect-square bg-black/40 rounded-2xl mb-4 relative overflow-hidden flex items-center justify-center">
+                        <img src="{{ $model->thumbnail ? asset('storage/'.$model->thumbnail) : Vite::asset('resources/img/anatomy_hero_bg.png') }}" class="w-full h-full object-cover opacity-30 group-hover:scale-110 group-hover:opacity-60 transition duration-500">
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div class="w-10 h-10 rounded-full bg-teal-500 text-black flex items-center justify-center shadow-lg shadow-teal-500/20">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-sm mb-1 truncate">{{ $model->title }}</h3>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">{{ $model->category }}</p>
+                </a>
+                @endforeach
+            </div>
+        </section>
 
     <script>
         document.getElementById('mobile-menu-btn').addEventListener('click', function() {

@@ -111,7 +111,7 @@
 
                         <model-viewer 
                 id="main-viewer"
-                src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" 
+                src="{{ count($models) > 0 ? (str_starts_with($models[0]->file_path, 'http') ? $models[0]->file_path : asset('storage/'.$models[0]->file_path)) : '' }}" 
                 alt="3D Anatomical Model"
                 ar 
                 ar-modes="webxr scene-viewer quick-look"
@@ -123,6 +123,11 @@
                 exposure="1.2"
                 class="w-full h-full outline-none"
                 style="--poster-color: transparent;">
+                
+                <button slot="ar-button" class="absolute bottom-24 left-1/2 -translate-x-1/2 px-6 py-3 bg-teal-500 text-black font-bold rounded-full shadow-lg shadow-teal-500/30 flex items-center gap-2 hover:bg-teal-400 transition-all z-20">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    View in Your Room (AR)
+                </button>
             </model-viewer>
 
         </section>
@@ -159,13 +164,28 @@
                             Lesions in the brainstem can cause severe deficits.
                         </p>
                     </div>
+
+                    <div class="p-5 rounded-2xl bg-gradient-to-br from-teal-500/10 to-emerald-500/10 border border-teal-500/20 text-center">
+                        <h4 class="text-teal-400 font-bold mb-3 text-xs uppercase tracking-widest flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+                            Launch AR on Mobile
+                        </h4>
+                        
+                        <div class="bg-white p-2 rounded-xl inline-block mb-3 shadow-lg">
+                            <img id="ar-qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data={{ urlencode(Request::fullUrl()) }}" alt="Scan for AR" class="w-[120px] h-[120px]">
+                        </div>
+                        
+                        <p class="text-gray-400 text-[10px] leading-relaxed">
+                            Scan this code with your phone camera to view this <strong>{{ $models[0]->title ?? 'model' }}</strong> in your real-world space.
+                        </p>
+                    </div>
                 </div>
 
                 <div class="mt-auto pt-6 border-t border-white/10">
-                    <button class="w-full py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl font-semibold transition-all flex items-center justify-center gap-2">
+                    <button id="play-tour-btn" class="w-full py-4 rounded-xl bg-white text-black font-bold flex items-center justify-center gap-2 hover:bg-teal-400 transition shadow-lg shadow-white/5">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         Play Guided Tour
                     </button>
@@ -182,10 +202,11 @@
             name: model.category || 'Anatomy',
             subtitle: model.title,
             title: model.title,
-            scientific: 'N/A',
+            scientific: model.scientific_name || 'N/A',
             desc: model.description,
-            functions: [],
-            clinical: '',
+            functions: model.functions || [],
+            clinical: model.clinical_note || '',
+            thumbnail: model.thumbnail,
             modelSrc: model.file_path.startsWith('http') ? model.file_path : '/storage/' + model.file_path
         }));
 
@@ -215,11 +236,18 @@
                 btn.onclick = () => selectModule(module.id);
                 
                 btn.innerHTML = `
-                    <div class="flex items-center justify-between mb-1">
-                        <span class="font-semibold ${isActive ? 'text-white' : 'group-hover:text-white'}">${module.name}</span>
-                        ${isActive ? '<div class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></div>' : ''}
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-lg overflow-hidden bg-black/40 flex-shrink-0 border border-white/10">
+                            <img src="${module.thumbnail ? '/storage/' + module.thumbnail : '{{ Vite::asset('resources/img/anatomy_hero_bg.png') }}'}" class="w-full h-full object-cover ${isActive ? 'opacity-100' : 'opacity-40 group-hover:opacity-100'} transition-opacity">
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between mb-0.5">
+                                <span class="font-semibold text-sm ${isActive ? 'text-white' : 'group-hover:text-white'}">${module.name}</span>
+                                ${isActive ? '<div class="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse"></div>' : ''}
+                            </div>
+                            <p class="text-[10px] ${isActive ? 'text-gray-400' : 'text-gray-500'} font-bold uppercase tracking-wider">${module.subtitle}</p>
+                        </div>
                     </div>
-                    <p class="text-xs ${isActive ? 'text-gray-400' : 'text-gray-500'}">${module.subtitle}</p>
                 `;
                 moduleList.appendChild(btn);
             });
@@ -243,6 +271,11 @@
                 ul.appendChild(li);
             });
             modelViewer.src = data.modelSrc;
+            
+            // Update QR Code for mobile AR access
+            const currentUrl = window.location.origin + '/anatomy/' + id;
+            document.getElementById('ar-qr-code').src = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(currentUrl)}`;
+            
             trackModelView(id);
 
             renderButtons();
@@ -261,6 +294,57 @@
             moduleList.innerHTML = '<p class="text-sm text-gray-400 p-4">No models available.</p>';
             viewerHint.innerText = 'No models available.';
         }
+
+        // --- Guided Tour Logic ---
+        let isTouring = false;
+        const tourBtn = document.getElementById('play-tour-btn');
+
+        function startTour() {
+            if (isTouring) return;
+            isTouring = true;
+            tourBtn.disabled = true;
+            tourBtn.innerHTML = 'Tour in Progress...';
+            viewerHint.innerText = 'System Tour: Rotating Model...';
+
+            // Stop auto-rotate if it was on
+            modelViewer.autoRotate = false;
+
+            const steps = [
+                { orbit: '45deg 55deg 150%', hint: 'Viewing from the upper right...' },
+                { orbit: '-45deg 75deg 120%', hint: 'Inspecting lateral structures...' },
+                { orbit: '180deg 90deg 180%', hint: 'Posterior view analysis...' },
+                { orbit: '0deg 75deg 105%', hint: 'Returning to primary focus...' }
+            ];
+
+            let currentStep = 0;
+
+            const nextStep = () => {
+                if (currentStep >= steps.length) {
+                    isTouring = false;
+                    tourBtn.disabled = false;
+                    tourBtn.innerHTML = `
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Play Guided Tour
+                    `;
+                    viewerHint.innerText = 'Tour Complete. Interactive mode active.';
+                    modelViewer.autoRotate = true;
+                    return;
+                }
+
+                const step = steps[currentStep];
+                modelViewer.cameraOrbit = step.orbit;
+                viewerHint.innerText = step.hint;
+                currentStep++;
+                setTimeout(nextStep, 3000); // 3 seconds per step
+            };
+
+            nextStep();
+        }
+
+        tourBtn.addEventListener('click', startTour);
     </script>
 </body>
 </html>
