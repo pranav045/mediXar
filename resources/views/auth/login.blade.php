@@ -56,20 +56,20 @@
     </style>
 </head>
 
-<body class="bg-[#050b09] min-h-screen flex items-center justify-center text-white overflow-hidden selection:bg-teal-500/30">
+<body class="bg-[#050b09] min-h-screen flex items-center justify-center text-white selection:bg-teal-500/30 py-10 md:py-0">
 
-        <div class="absolute inset-0 -z-10">
+    <div class="fixed inset-0 -z-10">
         <img src="{{ Vite::asset('resources/img/anatomy_hero_bg.png') }}"
              class="w-full h-full object-cover opacity-20 blur-sm mix-blend-screen">
     </div>
 
-        <div class="w-full flex items-center justify-center px-6 py-8">
+    <div class="w-full flex items-center justify-center px-4 md:px-6 py-8">
 
-                <div class="w-full max-w-6xl max-h-[90vh]">
+        <div class="w-full max-w-6xl">
 
-            <div class="glass-panel w-full h-full rounded-3xl flex flex-col lg:flex-row overflow-hidden shadow-2xl">
+            <div class="glass-panel w-full rounded-3xl flex flex-col lg:flex-row overflow-hidden shadow-2xl">
 
-                                <div class="lg:w-[65%] p-10 sm:p-14 md:p-16 flex flex-col justify-between border-r border-white/10 relative overflow-hidden">
+                <div class="lg:w-[65%] p-8 sm:p-14 md:p-16 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/10 relative overflow-hidden">
                     
                                         <div class="mb-10 relative z-10">
                         <a href="/" class="flex items-center gap-3 group inline-flex">

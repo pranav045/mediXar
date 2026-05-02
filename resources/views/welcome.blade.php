@@ -75,6 +75,24 @@
                     @endauth
                 @endif
             </div>
+
+            <button class="md:hidden text-white hover:text-teal-400 transition" id="mobile-menu-btn">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden absolute top-[72px] left-0 w-full glass-nav border-t-0 border-x-0 shadow-2xl flex flex-col p-6 gap-4 animate-in slide-in-from-top duration-300">
+            <a href="#how-it-works" class="text-lg font-medium text-gray-300 hover:text-teal-400 transition">How it Works</a>
+            <a href="#features" class="text-lg font-medium text-gray-300 hover:text-teal-400 transition">Features</a>
+            <a href="/about" class="text-lg font-medium text-gray-300 hover:text-teal-400 transition">About Us</a>
+            <a href="/contact" class="text-lg font-medium text-gray-300 hover:text-teal-400 transition">Contact</a>
+            <div class="h-px bg-white/10 my-2"></div>
+            @auth
+                <a href="/dashboard" class="text-lg font-bold text-teal-400">Dashboard</a>
+            @else
+                <a href="/login" class="text-lg font-medium text-gray-300">Log in</a>
+                <a href="/register" class="text-lg font-bold text-teal-400">Register</a>
+            @endauth
         </div>
     </nav>
 
@@ -366,5 +384,12 @@
         </div>
     </footer>
 
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+    </script>
 </body>
 </html>
