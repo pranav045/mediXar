@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Anatomy Explorer | MedixAR</title>
 
     @vite(['resources/css/app.css'])
-
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-        <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <!-- Model Viewer Component -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 
     <style>
         body { font-family: 'Outfit', sans-serif; overflow: hidden; }
@@ -53,6 +53,7 @@
 </head>
 <body class="bg-[#050b09] text-white h-screen flex flex-col selection:bg-teal-500/30">
 
+    <!-- Global Background Elements -->
     <div class="fixed inset-0 -z-20 pointer-events-none">
         <div class="absolute top-[20%] left-[10%] w-[30vw] h-[30vw] rounded-full bg-emerald-900/20 blur-[120px] mix-blend-screen"></div>
         <div class="absolute bottom-[10%] right-[10%] w-[40vw] h-[40vw] rounded-full bg-teal-900/20 blur-[150px] mix-blend-screen"></div>
@@ -80,7 +81,7 @@
         </div>
     </nav>
 
-    <!-- Mobile Navigation (New) -->
+    <!-- Mobile Navigation -->
     <div class="md:hidden w-full bg-[#050b09] px-4 py-4 flex flex-col gap-4 flex-shrink-0">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -117,19 +118,18 @@
         </div>
     </div>
 
-        <main class="flex-grow flex overflow-hidden relative p-4 gap-4">
-            <!-- Mobile Overlay -->
-            <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-20 hidden transition-opacity duration-300"></div>
+    <main class="flex-grow flex overflow-hidden relative p-4 gap-4">
+        <!-- Mobile Overlay -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-20 hidden transition-opacity duration-300"></div>
 
-            <aside id="sidebar-modules" class="w-[300px] flex-shrink-0 h-full flex flex-col gap-4 relative z-30 transition-all duration-300 translate-x-[-110%] md:translate-x-0 absolute md:relative left-4 md:left-0 hidden md:flex">
-                <div class="glass-panel rounded-2xl p-6 h-full flex flex-col">
-                    <h3 class="text-xs text-teal-400 font-bold tracking-widest uppercase mb-6">Learning Modules</h3>
-                    <div class="flex flex-col gap-2 overflow-y-auto pr-2" id="module-list"></div>
-                </div>
-            </aside>
+        <aside id="sidebar-modules" class="w-[300px] flex-shrink-0 h-full flex flex-col gap-4 relative z-30 transition-all duration-300 translate-x-[-110%] md:translate-x-0 absolute md:relative left-4 md:left-0 hidden md:flex">
+            <div class="glass-panel rounded-2xl p-6 h-full flex flex-col">
+                <h3 class="text-xs text-teal-400 font-bold tracking-widest uppercase mb-6">Learning Modules</h3>
+                <div class="flex flex-col gap-2 overflow-y-auto pr-2" id="module-list"></div>
+            </div>
+        </aside>
 
-            <section class="flex-grow h-full relative rounded-3xl overflow-hidden border border-white/5 bg-black/40 shadow-inner viewer-container">
-            
+        <section class="flex-grow h-full relative rounded-3xl overflow-hidden border border-white/5 bg-black/40 shadow-inner viewer-container">
             <div class="absolute top-6 left-6 z-10">
                 <button onclick="document.querySelector('model-viewer').cameraOrbit = '0deg 75deg 105%'" class="w-12 h-12 rounded-full bg-white/5 backdrop-blur-md flex items-center justify-center border border-white/10 hover:bg-white/20 transition shadow-xl">
                     <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -153,8 +153,7 @@
                 </p>
             </div>
 
-                        @php
-                $networkIp = '172.22.39.134';
+            @php
                 $firstModel = $models[0] ?? null;
                 $modelPath = '';
                 if ($firstModel) {
@@ -162,7 +161,8 @@
                     if (str_starts_with($path, 'http')) {
                         $modelPath = $path;
                     } else {
-                        $modelPath = "http://{$networkIp}:8000/storage/" . $path;
+                        // FIX: Use asset() helper to correctly point to local storage via current host
+                        $modelPath = asset('storage/' . $path);
                     }
                 }
             @endphp
@@ -181,14 +181,11 @@
                 exposure="1.2"
                 class="w-full h-full outline-none"
                 style="--poster-color: transparent;">
-                
-                <!-- Floating AR button removed as it's now in the Top Nav for mobile -->
             </model-viewer>
-
         </section>
 
-            <aside id="sidebar-details" class="w-[350px] flex-shrink-0 h-full flex flex-col gap-4 relative z-30 transition-all duration-300 translate-x-[110%] xl:translate-x-0 absolute xl:relative right-4 xl:right-0 hidden xl:flex">
-                <div class="glass-panel rounded-2xl p-6 h-full flex flex-col overflow-y-auto">
+        <aside id="sidebar-details" class="w-[350px] flex-shrink-0 h-full flex flex-col gap-4 relative z-30 transition-all duration-300 translate-x-[110%] xl:translate-x-0 absolute xl:relative right-4 xl:right-0 hidden xl:flex">
+            <div class="glass-panel rounded-2xl p-6 h-full flex flex-col overflow-y-auto">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-gray-300 w-fit mb-4" id="info-tag">
                     Nervous System
                 </div>
@@ -227,7 +224,8 @@
                         </h4>
                         
                         <div class="bg-white p-2 rounded-xl inline-block mb-3 shadow-lg">
-                            <img id="ar-qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data={{ urlencode(Request::fullUrl()) }}" alt="Scan for AR" class="w-[120px] h-[120px]">
+                            <!-- FIX: Use current host for QR code to allow mobile access on same network -->
+                            <img id="ar-qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data={{ urlencode(url()->current()) }}" alt="Scan for AR" class="w-[120px] h-[120px]">
                         </div>
                         
                         <p class="text-gray-400 text-[10px] leading-relaxed">
@@ -247,18 +245,12 @@
                 </div>
             </div>
         </aside>
-
     </main>
-
-    <!-- Removed Bottom Navigation (Now in Header) -->
-    
-
-    <!-- Removed Modal logic as AR is now triggered directly -->
-    
 
     <script>
         const dbModels = {!! json_encode($models ?? []) !!};
-        const networkIp = '172.22.39.134';
+        
+        // FIX: Remove hardcoded IP, use current window location or relative paths
         const anatomyData = dbModels.map(model => ({
             id: model.id,
             name: model.category || 'Anatomy',
@@ -266,17 +258,17 @@
             title: model.title,
             scientific: model.scientific_name || 'N/A',
             desc: model.description,
-            functions: model.functions || [],
+            functions: Array.isArray(model.functions) ? model.functions : [model.functions],
             clinical: model.clinical_note || '',
             thumbnail: model.thumbnail,
-            modelSrc: model.file_path.startsWith('http') ? model.file_path : `http://${networkIp}:8000/storage/${model.file_path}`
+            modelSrc: model.file_path.startsWith('http') ? model.file_path : `/storage/${model.file_path}`
         }));
 
         let currentModuleId = {!! isset($selectedModelId) ? $selectedModelId : (count($models) > 0 ? $models[0]->id : 'null') !!};
         const modelViewer = document.getElementById('main-viewer');
-        const loadingOverlay = document.getElementById('loading-overlay');
         const viewerHint = document.getElementById('viewer-hint');
         const moduleList = document.getElementById('module-list');
+
         function trackModelView(id) {
             fetch(`/anatomy/${id}/track-view`, {
                 method: 'POST',
@@ -286,6 +278,7 @@
                 }
             }).catch(console.error);
         }
+
         function renderButtons() {
             moduleList.innerHTML = '';
             anatomyData.forEach(module => {
@@ -314,10 +307,13 @@
                 moduleList.appendChild(btn);
             });
         }
+
         function selectModule(id, force = false) {
             if (!force && currentModuleId === id) return;
             currentModuleId = id;
             const data = anatomyData.find(m => m.id === id);
+            if (!data) return;
+
             viewerHint.innerText = 'Loading model...';
             document.getElementById('info-tag').innerText = data.name;
             document.getElementById('info-title').innerText = data.title;
@@ -328,34 +324,35 @@
             const ul = document.getElementById('info-functions');
             ul.innerHTML = '';
             data.functions.forEach(f => {
-                const li = document.createElement('li');
-                li.innerText = f;
-                ul.appendChild(li);
+                if(f) {
+                    const li = document.createElement('li');
+                    li.innerText = f;
+                    ul.appendChild(li);
+                }
             });
+
             modelViewer.src = data.modelSrc;
             
-            // Update QR Code for mobile AR access (using local network IP)
-            const networkIp = '10.119.114.31';
-            const currentUrl = `http://${networkIp}:8000/anatomy/${id}`;
+            // Update QR Code with current URL structure
+            const currentUrl = window.location.origin + '/anatomy/' + id;
             document.getElementById('ar-qr-code').src = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(currentUrl)}`;
             
             trackModelView(id);
-
             renderButtons();
         }
+
         modelViewer.addEventListener('load', () => {
             viewerHint.innerText = 'Scroll to zoom • Click & drag to rotate';
         });
+
         modelViewer.addEventListener('error', (event) => {
             console.error('Model Viewer Error:', event);
-            viewerHint.innerText = 'Failed to load 3D model. Check console for details.';
+            viewerHint.innerText = 'Failed to load 3D model. Check network/paths.';
         });
+
         if (anatomyData.length > 0) {
             renderButtons();
             selectModule(currentModuleId, true);
-        } else {
-            moduleList.innerHTML = '<p class="text-sm text-gray-400 p-4">No models available.</p>';
-            viewerHint.innerText = 'No models available.';
         }
 
         // --- Guided Tour Logic ---
@@ -369,7 +366,6 @@
             tourBtn.innerHTML = 'Tour in Progress...';
             viewerHint.innerText = 'System Tour: Rotating Model...';
 
-            // Stop auto-rotate if it was on
             modelViewer.autoRotate = false;
 
             const steps = [
@@ -380,18 +376,11 @@
             ];
 
             let currentStep = 0;
-
             const nextStep = () => {
                 if (currentStep >= steps.length) {
                     isTouring = false;
                     tourBtn.disabled = false;
-                    tourBtn.innerHTML = `
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        Play Guided Tour
-                    `;
+                    tourBtn.innerHTML = `<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> Play Guided Tour`;
                     viewerHint.innerText = 'Tour Complete. Interactive mode active.';
                     modelViewer.autoRotate = true;
                     return;
@@ -401,72 +390,37 @@
                 modelViewer.cameraOrbit = step.orbit;
                 viewerHint.innerText = step.hint;
                 currentStep++;
-                setTimeout(nextStep, 3000); // 3 seconds per step
+                setTimeout(nextStep, 3000);
             };
-
             nextStep();
         }
 
         tourBtn.addEventListener('click', startTour);
 
-        // --- Unified Mobile Navigation Logic ---
+        // --- Mobile Logic ---
         const navModels = document.getElementById('nav-models');
         const navInfo = document.getElementById('nav-info');
-        const navAR = document.getElementById('nav-ar');
         const sidebarModules = document.getElementById('sidebar-modules');
         const sidebarDetails = document.getElementById('sidebar-details');
         const overlay = document.getElementById('sidebar-overlay');
-        const qrModal = document.getElementById('qr-modal');
-        const qrModalContent = document.getElementById('qr-modal-content');
 
-        window.toggleSidebar = function(sidebar, show) {
-            // Close other sidebars first
+        function toggleSidebar(sidebar, show) {
             sidebarModules.classList.add('hidden');
             sidebarDetails.classList.add('hidden');
             
             if (show) {
-                sidebar.classList.remove('hidden', 'translate-x-[-110%]', 'translate-x-[110%]');
-                sidebar.classList.add('flex', 'translate-x-0');
+                sidebar.classList.remove('hidden');
+                sidebar.classList.add('flex');
                 overlay.classList.remove('hidden');
-                setTimeout(() => overlay.classList.add('opacity-100'), 10);
             } else {
                 sidebar.classList.add('hidden');
                 overlay.classList.add('hidden');
-                overlay.classList.remove('opacity-100');
             }
-        };
+        }
 
-        window.toggleModal = function(modalId, show) {
-            const modal = document.getElementById(modalId);
-            if (!modal) return;
-            const content = modal.querySelector('div:last-child');
-            if (show) {
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    content.classList.remove('scale-90', 'opacity-0');
-                    content.classList.add('scale-100', 'opacity-100');
-                }, 10);
-            } else {
-                content.classList.add('scale-90', 'opacity-0');
-                content.classList.remove('scale-100', 'opacity-100');
-                setTimeout(() => modal.classList.add('hidden'), 300);
-            }
-        };
-
-        navModels.addEventListener('click', () => {
-            toggleSidebar(sidebarModules, sidebarModules.classList.contains('hidden'));
-        });
-
-        navInfo.addEventListener('click', () => {
-            toggleSidebar(sidebarDetails, sidebarDetails.classList.contains('hidden'));
-        });
-
-        overlay.addEventListener('click', () => {
-            sidebarModules.classList.add('hidden');
-            sidebarDetails.classList.add('hidden');
-            overlay.classList.add('hidden');
-            overlay.classList.remove('opacity-100');
-        });
+        navModels.addEventListener('click', () => toggleSidebar(sidebarModules, sidebarModules.classList.contains('hidden')));
+        navInfo.addEventListener('click', () => toggleSidebar(sidebarDetails, sidebarDetails.classList.contains('hidden')));
+        overlay.addEventListener('click', () => toggleSidebar(null, false));
     </script>
 </body>
 </html>
