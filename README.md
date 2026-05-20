@@ -463,14 +463,6 @@ Plan:      Free
 
 > 🔵 Planned &nbsp;|&nbsp; 🟡 In Progress &nbsp;|&nbsp; 🔴 High Priority
 
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for full details.
-
----
-
 <div align="center">
 
 <br/>
