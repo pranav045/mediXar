@@ -157,7 +157,7 @@ Make sure you have the following installed on your machine:
 **1. Clone the repository**
 
 ```bash
-git clone https://github.com/Gomit-Dev/mediXar.git
+git clone https://github.com/pranav045/mediXar.git
 cd mediXar/app
 ```
 
@@ -462,14 +462,6 @@ Plan:      Free
 - [ ] 🔵 **Mobile-responsive sidebar** — collapsible anatomy explorer on small screens
 
 > 🔵 Planned &nbsp;|&nbsp; 🟡 In Progress &nbsp;|&nbsp; 🔴 High Priority
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for full details.
-
----
 
 <div align="center">
 

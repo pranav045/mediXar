@@ -62,14 +62,13 @@
                 </div>
             </div>
 
-            <!-- Pranav Gaira -->
             <div class="glass-panel p-10 rounded-3xl flex flex-col items-center text-center relative md:-translate-y-4 z-20 group border-teal-500/40 border-2 shadow-[0_0_30px_rgba(45,212,191,0.15)] transition-all duration-500">
                 <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1 bg-gradient-to-r from-teal-400 to-emerald-400 text-[#050b09] font-bold text-xs rounded-full uppercase tracking-widest shadow-lg">
                     Core Developer
                 </div>
                 <div class="w-40 h-40 rounded-full bg-gradient-to-tr from-teal-400 to-emerald-400 p-1 mb-6 relative shadow-[0_0_25px_rgba(45,212,191,0.5)] group-hover:scale-105 transition-all duration-500">
                     <div class="w-full h-full rounded-full bg-[#050b09] overflow-hidden">
-                        <img src="{{ asset('img/gomit.png') }}?v={{ time() }}" alt="Gomit Saha" class="w-full h-full object-cover">
+                        <img src="{{ asset('img/pranav.png') }}?v={{ time() }}" alt="Gomit Saha" class="w-full h-full object-cover">
                     </div>
                 </div>
                 <h3 class="text-3xl font-bold mb-2">Pranav Gaira</h3>
@@ -86,6 +85,7 @@
                     </a>
                 </div>
             </div>
+            <!-- Pranav Gaira -->
 
     </div>
 @endsection
